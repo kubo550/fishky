@@ -1,34 +1,26 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div class="container">
+    <header>
+      <div class="wrapper">
+        <nav>
+          <RouterLink to="/">Home</RouterLink>
+          <RouterLink to="/about">About</RouterLink>
+        </nav>
+      </div>
+    </header>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
 
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
 }
 
 nav {
@@ -38,18 +30,26 @@ nav {
   margin-top: 2rem;
 }
 
+nav a {
+  color: #333;
+}
 nav a.router-link-exact-active {
-  color: var(--color-text);
+  color: #fda428;
 }
 
 nav a.router-link-exact-active:hover {
-  background-color: transparent;
+  color: rgba(253, 164, 40, 0.86);
+}
+
+nav a:hover {
+  color: rgba(253, 164, 40, 0.86);
 }
 
 nav a {
   display: inline-block;
   padding: 0 1rem;
   border-left: 1px solid var(--color-border);
+  background-color: transparent;
 }
 
 nav a:first-of-type {
@@ -63,11 +63,8 @@ nav a:first-of-type {
     padding-right: calc(var(--section-gap) / 2);
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
   header .wrapper {
+    width: 100vw;
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
