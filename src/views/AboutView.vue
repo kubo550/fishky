@@ -2,10 +2,12 @@
 import { defineComponent, ref } from 'vue'
 import { parseCsv } from '@/lib/utils'
 
+// todo: move to composition api
 export default defineComponent({
   name: 'HomeView',
   setup() {
-    const flashcard = ref([]) // [word, meaning][]
+    // todo: use FlashcardType
+    const flashcard = ref([])
 
     const handleFile = (e) => {
       const file = e.target?.files?.[0]

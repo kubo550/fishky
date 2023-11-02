@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import Flashcards from '@/components/Flashcards.vue'
-const flashcards = ref<string[][]>([
-  ['Pies', 'Dog'],
-  ['Kot', 'Cat']
+import Flashcards from '@/components/flash-cards.vue'
+
+export type FlashcardType = {
+  id: string
+  term: string
+  meaning: string
+}
+
+const flashcards = ref<FlashcardType[]>([
+  {
+    id: '1',
+    term: 'Hello',
+    meaning: 'Cześć'
+  }
 ])
 </script>
 
@@ -12,8 +22,6 @@ const flashcards = ref<string[][]>([
     <h1>Insert Here your words</h1>
 
     <Flashcards :flashcards="flashcards" />
-
-    <RouterLink to="/saved">Save</RouterLink>
   </div>
 </template>
 
@@ -25,5 +33,12 @@ const flashcards = ref<string[][]>([
   justify-content: center;
   height: 100vh;
   width: 100%;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 2rem;
 }
 </style>
