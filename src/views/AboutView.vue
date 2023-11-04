@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import UploadCSV from '@/components/UploadCSV.vue'
 import type { FlashcardType } from '@/views/InsertView.vue'
 import FlashCards from '@/components/flash-cards.vue'
+import UploadImage from '@/components/UploadImage.vue'
 enum UploadMethod {
   CSV = 'csv',
   JSON = 'json',
@@ -38,13 +39,20 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
       </label>
     </div>
 
-    <p>
-      <span v-if="uploadMethod === UploadMethod.CSV">
+    <div>
+      <div v-if="uploadMethod === UploadMethod.CSV">
         <UploadCSV :setFlashcards="setFlashcards" />
-      </span>
-      <span v-if="uploadMethod === UploadMethod.JSON">JSON</span>
-      <span v-if="uploadMethod === UploadMethod.IMAGE">Image</span>
-    </p>
+      </div>
+      <div v-if="uploadMethod === UploadMethod.JSON">TODO</div>
+      <Suspense>
+        <div v-if="uploadMethod === UploadMethod.IMAGE">
+          <UploadImage :setFlashcards="setFlashcards" />
+        </div>
+        <template #fallback>
+          <p>Loading...</p>
+        </template>
+      </Suspense>
+    </div>
   </div>
 
   <FlashCards v-if="flashcards.length" :flashcards="flashcards" />

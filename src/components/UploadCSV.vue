@@ -14,6 +14,7 @@ const handleUploadFile = (e: Event) => {
   // @ts-ignore
   const file = e.target?.files?.[0]
   if (!file || (file.type !== 'text/csv' && file.type !== 'application/json')) {
+    alert('Invalid file')
     return
   }
 
