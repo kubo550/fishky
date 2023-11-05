@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { isValidCSV, parseCsv } from '@/lib/utils'
 import type { PropType } from 'vue'
-import type { FlashcardType } from '@/views/InsertView.vue'
+import type { FlashcardType } from '@/lib/types'
 
 const { setFlashcards } = defineProps({
   setFlashcards: {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import UploadCSV from '@/components/UploadCSV.vue'
-import type { FlashcardType } from '@/views/InsertView.vue'
+import type { FlashcardType } from '@/lib/types'
 import FlashCards from '@/components/flash-cards.vue'
 import UploadImage from '@/components/UploadImage.vue'
 enum UploadMethod {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ref } from 'vue'
-import type { FlashcardType } from '@/views/InsertView.vue'
+import type { FlashcardType } from '@/lib/types'
 import { createWorker } from 'tesseract.js'
 
 const worker = await createWorker({

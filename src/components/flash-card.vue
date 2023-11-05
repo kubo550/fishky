@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import TrashCan from 'vue-material-design-icons/TrashCanOutline.vue'
 import type { PropType } from 'vue'
-import type { FlashcardType } from '@/views/InsertView.vue'
+import type { FlashcardType } from '@/lib/types'
 
 defineProps({
   flashcard: {

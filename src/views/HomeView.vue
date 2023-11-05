@@ -43,7 +43,7 @@ main {
   object-fit: contain;
 }
 h1 {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 500;
   color: #333;
 }

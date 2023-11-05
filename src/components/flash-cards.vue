@@ -4,7 +4,7 @@ import PenPlus from 'vue-material-design-icons/PenPlus.vue'
 import BasketUnfill from 'vue-material-design-icons/BasketUnfill.vue'
 
 import { ref } from 'vue'
-import type { FlashcardType } from '@/views/InsertView.vue'
+import type { FlashcardType } from '@/lib/types'
 import Flashcard from '@/components/flash-card.vue'
 
 const props = defineProps({
