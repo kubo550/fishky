@@ -34,6 +34,30 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+
+  --color-blue: #255D90;
+  --color-blue-soft: #7AABE9;
+  --color-blue-mute: #D6E4F2;
+
+  --color-green: #006052;
+  --color-green-soft: #00A88F;
+  --color-green-mute: #B3ECE1;
+
+  --color-yellow: #FDA428;
+  --color-yellow-soft: #EED485;
+  --color-yellow-mute: #FDE9D6;
+
+  --color-red: #D0021B;
+  --color-red-soft: #F44336;
+  --color-red-mute: #fdbbbb;
+
+  --color-purple: #7B1FA2;
+  --color-purple-soft: #9C27B0;
+  --color-purple-mute: #E1BEE7;
+
+  --color-brown: #712726;
+  --color-brown-soft: #9E4A4A;
+  --color-brown-mute: #E1BEE7;
 }
 
 @media (prefers-color-scheme: dark) {

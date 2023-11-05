@@ -4,29 +4,44 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <main>
-    <h1>Add words to your custom <span> flashcards </span></h1>
-    <p>
-      Flashcards are nothing but lightning bolts in the world of learning. You simply show them to
-      your brain, and it goes "BOOM" - information gets absorbed faster than light rays into a black
-      hole!
-    </p>
+    <div class="side">
+      <img src="https://placehold.co/600x400" alt="Flashcards" />
+    </div>
+    <div class="side">
+      <h1>Add words to your custom <span> flashcards </span></h1>
+      <p>
+        Flashcards are nothing but lightning bolts in the world of learning. You simply show them to
+        your brain, and it goes "BOOM" - information gets absorbed faster than light rays into a
+        black hole!
+      </p>
 
-    <RouterLink to="/about">
-      <button>Get Started</button>
-    </RouterLink>
+      <RouterLink to="/about">
+        <button>Get Started</button>
+      </RouterLink>
+    </div>
   </main>
 </template>
 
 <style scoped>
 main {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
+  flex-direction: row;
   width: 100%;
 }
+.side {
+  margin: 2rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.side img {
+  width: 100%;
+  max-width: 600px;
+  object-fit: contain;
+}
 h1 {
   font-size: 2rem;
   font-weight: 500;
@@ -34,7 +49,7 @@ h1 {
 }
 
 span {
-  color: #009d3f;
+  color: var(--color-green);
 }
 
 p {
