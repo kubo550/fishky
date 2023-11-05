@@ -17,20 +17,6 @@ const uploadMethod = ref<UploadMethod>(UploadMethod.CSV)
 const setFlashcards = (newFlashcards: FlashcardType[]) => {
   flashcards.value = newFlashcards
 }
-const upsertManualFlashcardExample = () => {
-  if (1 === 1) {
-    return
-  }
-  if (uploadMethod.value !== UploadMethod.MANUAL && flashcards.value.length === 0) {
-    flashcards.value = [
-      {
-        id: Math.random().toString(),
-        term: 'term',
-        meaning: 'meaning'
-      }
-    ]
-  }
-}
 </script>
 
 <template>
@@ -43,7 +29,7 @@ const upsertManualFlashcardExample = () => {
         CSV
       </label>
 
-      <label @click="upsertManualFlashcardExample">
+      <label>
         <input type="radio" value="manual" v-model="uploadMethod" name="uploadMethod" />
         Manual
       </label>
@@ -63,6 +49,8 @@ const upsertManualFlashcardExample = () => {
       <div v-if="uploadMethod === UploadMethod.CSV">
         <UploadCSV :setFlashcards="setFlashcards" />
       </div>
+
+      <div v-if="uploadMethod === UploadMethod.MANUAL">TODO</div>
 
       <div v-if="uploadMethod === UploadMethod.JSON">TODO</div>
 
