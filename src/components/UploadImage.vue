@@ -3,14 +3,20 @@ import type { PropType } from 'vue'
 import { ref } from 'vue'
 import type { FlashcardType } from '@/lib/types'
 import { createWorker } from 'tesseract.js'
-
-const worker = await createWorker({
-  logger: (m) => console.log(m)
-})
+import WordSelector from '@/components/WordSelector.vue'
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
 const text = ref('')
+const editMode = ref(false)
+const imageProgress = ref(0)
+
+const worker = await createWorker({
+  logger: (m) => {
+    console.log(m)
+    imageProgress.value = m.progress
+  }
+})
 
 const { setFlashcards } = defineProps({
   setFlashcards: {
@@ -42,9 +48,12 @@ const handleUploadFile = (e: Event) => {
   reader.readAsDataURL(file)
   reader.onload = async () => {
     isLoading.value = true
+    imageProgress.value = 0
+
     error.value = null
     try {
       text.value = await extractTextFromImage(file)
+      editMode.value = true
     } catch (e) {
       error.value = 'Error while extracting text from image'
     } finally {
@@ -70,16 +79,40 @@ const handleUploadFile = (e: Event) => {
 
   <input type="file" accept="image/png, image/jpeg" @change="handleUploadFile" />
 
-  <p>or</p>
-  <button>Take a photo</button>
+  <!--  TODO: -->
+  <!--  <p>or</p>-->
+  <!--  <button>Take a photo</button>-->
 
-  <div v-if="isLoading"></div>
+  <div v-if="isLoading">
+    <p>Extracting text from image...</p>
+    <progress :value="imageProgress" max="1" />
+  </div>
   <div v-if="error">Error: {{ error }}</div>
-  <div v-if="text">{{ text }}</div>
+
+  <div v-if="text.length && editMode">
+    <p>
+      Check if the text is correct and then click on the button below to navigate to the next step
+    </p>
+
+    <textarea v-model="text" />
+
+    <button @click="editMode = false">Next</button>
+  </div>
+
+  <WordSelector v-if="text.length && !editMode" :text="text" />
 </template>
 
 <style scoped>
 p {
   margin-bottom: 1rem;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
 }
 </style>
