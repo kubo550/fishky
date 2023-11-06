@@ -4,6 +4,7 @@ import { ref } from 'vue'
 import type { FlashcardType } from '@/lib/types'
 import { createWorker } from 'tesseract.js'
 import WordSelector from '@/components/WordSelector.vue'
+import UploadText from '@/components/UploadText.vue'
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
@@ -63,6 +64,11 @@ const handleUploadFile = (e: Event) => {
     isLoading.value = false
   }
 }
+
+function onTextSave() {
+  editMode.value = false
+  return
+}
 </script>
 
 <template>
@@ -94,9 +100,12 @@ const handleUploadFile = (e: Event) => {
       Check if the text is correct and then click on the button below to navigate to the next step
     </p>
 
-    <textarea v-model="text" />
-
-    <button @click="editMode = false">Next</button>
+    <UploadText
+      :on-button-click="onTextSave"
+      :on-change="(newText) => (text = newText)"
+      :text="text"
+      :set-flashcards="setFlashcards"
+    />
   </div>
 
   <WordSelector v-if="text.length && !editMode" :text="text" />
@@ -105,14 +114,5 @@ const handleUploadFile = (e: Event) => {
 <style scoped>
 p {
   margin-bottom: 1rem;
-}
-
-textarea {
-  width: 100%;
-  height: 200px;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
 }
 </style>

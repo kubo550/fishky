@@ -4,15 +4,18 @@ import UploadCSV from '@/components/UploadCSV.vue'
 import type { FlashcardType } from '@/lib/types'
 import FlashCards from '@/components/flash-cards.vue'
 import UploadImage from '@/components/UploadImage.vue'
+import UploadText from '@/components/UploadText.vue'
+
 enum UploadMethod {
   MANUAL = 'manual',
   CSV = 'csv',
   JSON = 'json',
-  IMAGE = 'image'
+  IMAGE = 'image',
+  TEXT = 'text'
 }
 
 const flashcards = ref<FlashcardType[]>([])
-const uploadMethod = ref<UploadMethod>(UploadMethod.CSV)
+const uploadMethod = ref<UploadMethod>(UploadMethod.TEXT)
 
 const setFlashcards = (newFlashcards: FlashcardType[]) => {
   flashcards.value = newFlashcards
@@ -25,13 +28,18 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
 
     <div class="uploadMethod">
       <label>
-        <input type="radio" value="csv" v-model="uploadMethod" name="uploadMethod" />
-        CSV
+        <input type="radio" value="image" v-model="uploadMethod" name="uploadMethod" />
+        Image
       </label>
 
       <label>
-        <input type="radio" value="manual" v-model="uploadMethod" name="uploadMethod" />
-        Manual
+        <input type="radio" value="text" v-model="uploadMethod" name="uploadMethod" />
+        Text
+      </label>
+
+      <label>
+        <input type="radio" value="csv" v-model="uploadMethod" name="uploadMethod" />
+        CSV
       </label>
 
       <label>
@@ -40,27 +48,37 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
       </label>
 
       <label>
-        <input type="radio" value="image" v-model="uploadMethod" name="uploadMethod" />
-        Image
+        <input type="radio" value="manual" v-model="uploadMethod" name="uploadMethod" />
+        Manual
       </label>
     </div>
 
     <div>
-      <div v-if="uploadMethod === UploadMethod.CSV">
-        <UploadCSV :setFlashcards="setFlashcards" />
-      </div>
-
-      <div v-if="uploadMethod === UploadMethod.MANUAL">TODO</div>
-
-      <div v-if="uploadMethod === UploadMethod.JSON">TODO</div>
-
       <Suspense timeout="0">
         <div v-if="uploadMethod === UploadMethod.IMAGE">
           <UploadImage :setFlashcards="setFlashcards" />
         </div>
 
-        <template #fallback> Loading... </template>
+        <template #fallback> Loading...</template>
       </Suspense>
+
+      <div v-if="uploadMethod === UploadMethod.TEXT">
+        <p>
+          We will try to extract text from it and translate it to your native language and create
+          flashcards for you.
+        </p>
+        <UploadText
+          text="Pattern recognition is an activity so fundamental to human nature that it often goes unnoticed in our daily lives. It is through pattern recognition that we distinguish the faces of loved ones, understand speech, and interpret complex information from the world around us. The human brain, exceptionally adapted to seeking regularities and continuity in sensory perception, utilizes these abilities for navigation in a stimulus-rich environment. Pattern recognition enables the identification of dangers, the discovery of opportunities, as well as lifelong learning and adaptation."
+          :setFlashcards="setFlashcards"
+        />
+      </div>
+      <div v-if="uploadMethod === UploadMethod.CSV">
+        <UploadCSV :setFlashcards="setFlashcards" />
+      </div>
+
+      <div v-if="uploadMethod === UploadMethod.JSON">TODO</div>
+
+      <div v-if="uploadMethod === UploadMethod.MANUAL">TODO</div>
     </div>
   </div>
 

@@ -1,3 +1,5 @@
+import { GptApiClient } from '@/architecture/gpt-api-client'
+
 export function parseCsv(csv: string | ArrayBuffer): string[][] {
   if (typeof csv !== 'string') {
     return []
@@ -18,7 +20,8 @@ export function isValidCSV(parsedCSV: string[][]) {
 }
 
 // TODO: use gpt to pre-generate phrases
-export function extractPhrasesFromText(text: string) {
+export async function extractPhrasesFromText(text: string) {
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   return text
     .split(/\s+/g)
     .filter((p) => p !== '')
@@ -32,4 +35,18 @@ export function extractPhrasesFromText(text: string) {
     .filter((_, i) => i % 2 === 0)
     .filter((p, i, arr) => arr.indexOf(p) === i)
     .map((p) => ({ id: Math.random().toString(), phrase: p }))
+}
+
+export async function premiumExtractPhrasesFromText(text: string) {
+  const gptApiClient = new GptApiClient('TODO')
+  const prompt =
+    "podziel ten tekst na fragmenty o długości maksymalnie kilku słów, takie fragmenty które będą później na fiszkach do nauki języka obcego, więc możesz omijać oczywiste słowa takie jak 'and'  'so' 'the' itp jeżeli są na początku lub końcu takiej frazy, odpowiedź tylko i wyłącznie jsonem który powinien być takiego typu phrases: [{phrase: string}]. nie wolno ci dodać nic poza jsonem. tekst: "
+  const response = await gptApiClient.makeRequest('POST', {
+    prompt: prompt + text
+  })
+
+  return JSON.parse(response).phrases.map((p: { phrase: string }) => ({
+    id: Math.random().toString(),
+    phrase: p.phrase
+  }))
 }

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { extractPhrasesFromText } from '@/lib/utils'
+import { extractPhrasesFromText, premiumExtractPhrasesFromText } from '@/lib/utils'
 
 const { text } = defineProps({
   text: {
@@ -9,7 +9,7 @@ const { text } = defineProps({
   }
 })
 
-const phrases = ref<{ id: string; phrase: string }[]>(extractPhrasesFromText(text))
+const phrases = ref<{ id: string; phrase: string }[]>(await premiumExtractPhrasesFromText(text))
 
 const removePhrase = (id: string) => {
   phrases.value = phrases.value.filter((p) => p.id !== id)
