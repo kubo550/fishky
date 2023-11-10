@@ -2,7 +2,6 @@
 import type { PropType } from 'vue'
 import { ref } from 'vue'
 import type { FlashcardType } from '@/lib/types'
-import WordSelector from '@/components/WordSelector.vue'
 
 const { text: initialText, onChange } = defineProps({
   text: {
@@ -23,24 +22,21 @@ const { text: initialText, onChange } = defineProps({
   setFlashcards: {
     type: Function as PropType<(newFlashcards: FlashcardType[]) => void>,
     required: true
+  },
+  onNext: {
+    type: Function as PropType<() => void>,
+    required: false,
+    default: () => {}
   }
 })
 
 const text = ref(initialText)
-
-const showPhraseSelector = ref(false)
 </script>
 
 <template>
   <textarea v-model="text" @input="onChange(text)" />
 
-  <button @click="showPhraseSelector = true">Next</button>
-
-  <Suspense timeout="0">
-    <WordSelector v-if="showPhraseSelector" :text="text" />
-
-    <template #fallback> Loading...</template>
-  </Suspense>
+  <button @click="onNext">Next</button>
 </template>
 
 <style scoped>

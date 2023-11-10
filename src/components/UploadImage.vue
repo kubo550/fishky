@@ -1,28 +1,31 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { ref } from 'vue'
-import type { FlashcardType } from '@/lib/types'
+import { computed, ref } from 'vue'
 import { createWorker } from 'tesseract.js'
-import WordSelector from '@/components/WordSelector.vue'
-import UploadText from '@/components/UploadText.vue'
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
-const text = ref('')
-const editMode = ref(false)
 const imageProgress = ref(0)
+const imageProgressStatus = ref('')
 
+const imageProgressText = computed(() => `${(imageProgress.value * 100).toFixed(2)}%`)
 const worker = await createWorker({
   logger: (m) => {
     console.log(m)
     imageProgress.value = m.progress
+    imageProgressStatus.value = m.status
   }
 })
 
-const { setFlashcards } = defineProps({
-  setFlashcards: {
-    type: Function as PropType<(newFlashcards: FlashcardType[]) => void>,
+const { setText, onNext } = defineProps({
+  setText: {
+    type: Function as PropType<(newText: string) => void>,
     required: true
+  },
+  onNext: {
+    type: Function as PropType<() => void>,
+    required: false,
+    default: () => {}
   }
 })
 
@@ -53,8 +56,8 @@ const handleUploadFile = (e: Event) => {
 
     error.value = null
     try {
-      text.value = await extractTextFromImage(file)
-      editMode.value = true
+      setText(await extractTextFromImage(file))
+      onNext()
     } catch (e) {
       error.value = 'Error while extracting text from image'
     } finally {
@@ -63,11 +66,6 @@ const handleUploadFile = (e: Event) => {
 
     isLoading.value = false
   }
-}
-
-function onTextSave() {
-  editMode.value = false
-  return
 }
 </script>
 
@@ -92,23 +90,9 @@ function onTextSave() {
   <div v-if="isLoading">
     <p>Extracting text from image...</p>
     <progress :value="imageProgress" max="1" />
+    <p>{{ imageProgressStatus }} - {{ imageProgressText }}</p>
   </div>
   <div v-if="error">Error: {{ error }}</div>
-
-  <div v-if="text.length && editMode">
-    <p>
-      Check if the text is correct and then click on the button below to navigate to the next step
-    </p>
-
-    <UploadText
-      :on-button-click="onTextSave"
-      :on-change="(newText) => (text = newText)"
-      :text="text"
-      :set-flashcards="setFlashcards"
-    />
-  </div>
-
-  <WordSelector v-if="text.length && !editMode" :text="text" />
 </template>
 
 <style scoped>

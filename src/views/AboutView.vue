@@ -1,88 +1,60 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import UploadCSV from '@/components/UploadCSV.vue'
 import type { FlashcardType } from '@/lib/types'
 import FlashCards from '@/components/flash-cards.vue'
 import UploadImage from '@/components/UploadImage.vue'
 import UploadText from '@/components/UploadText.vue'
-
-enum UploadMethod {
-  MANUAL = 'manual',
-  CSV = 'csv',
-  JSON = 'json',
-  IMAGE = 'image',
-  TEXT = 'text'
+import WordSelector from '@/components/WordSelector.vue'
+enum AppState {
+  UploadImage = 'upload-image',
+  UploadText = 'upload-text',
+  AnalyzeText = 'analyze-text',
+  Translate = 'translate',
+  Flashcards = 'flashcards'
 }
 
+const appState = ref<AppState>(AppState.UploadText)
+const text = ref('')
 const flashcards = ref<FlashcardType[]>([])
-const uploadMethod = ref<UploadMethod>(UploadMethod.TEXT)
 
+const setText = (newText: string) => {
+  text.value = newText
+}
 const setFlashcards = (newFlashcards: FlashcardType[]) => {
   flashcards.value = newFlashcards
 }
 </script>
 
-<template>
-  <div class="container">
-    <h1>Upload your file</h1>
+<template class="container">
+  <h1>Create Your Fishky Cards</h1>
 
-    <div class="uploadMethod">
-      <label>
-        <input type="radio" value="image" v-model="uploadMethod" name="uploadMethod" />
-        Image
-      </label>
-
-      <label>
-        <input type="radio" value="text" v-model="uploadMethod" name="uploadMethod" />
-        Text
-      </label>
-
-      <label>
-        <input type="radio" value="csv" v-model="uploadMethod" name="uploadMethod" />
-        CSV
-      </label>
-
-      <label>
-        <input type="radio" value="json" v-model="uploadMethod" name="uploadMethod" />
-        JSON
-      </label>
-
-      <label>
-        <input type="radio" value="manual" v-model="uploadMethod" name="uploadMethod" />
-        Manual
-      </label>
-    </div>
-
-    <div>
-      <Suspense timeout="0">
-        <div v-if="uploadMethod === UploadMethod.IMAGE">
-          <UploadImage :setFlashcards="setFlashcards" />
-        </div>
-
-        <template #fallback> Loading...</template>
-      </Suspense>
-
-      <div v-if="uploadMethod === UploadMethod.TEXT">
-        <p>
-          We will try to extract text from it and translate it to your native language and create
-          flashcards for you.
-        </p>
-        <UploadText
-          text="Pattern recognition is an activity so fundamental to human nature that it often goes unnoticed in our daily lives. It is through pattern recognition that we distinguish the faces of loved ones, understand speech, and interpret complex information from the world around us. The human brain, exceptionally adapted to seeking regularities and continuity in sensory perception, utilizes these abilities for navigation in a stimulus-rich environment. Pattern recognition enables the identification of dangers, the discovery of opportunities, as well as lifelong learning and adaptation."
-          :setFlashcards="setFlashcards"
-        />
-      </div>
-      <div v-if="uploadMethod === UploadMethod.CSV">
-        <UploadCSV :setFlashcards="setFlashcards" />
-      </div>
-
-      <div v-if="uploadMethod === UploadMethod.JSON">TODO</div>
-
-      <div v-if="uploadMethod === UploadMethod.MANUAL">TODO</div>
-    </div>
+  <div class="">
+    <button @click="appState = AppState.UploadImage">Img</button>
+    <button @click="appState = AppState.UploadText">Text</button>
+    <button @click="appState = AppState.AnalyzeText" :disabled="!text.length">Analyze</button>
+    <button @click="appState = AppState.Translate" :disabled="!text.length">Translate</button>
   </div>
 
-  <FlashCards v-if="flashcards.length" :flashcards="flashcards" />
+  <Suspense v-if="appState === AppState.UploadImage" timeout="0">
+    <UploadImage :set-text="setText" :on-next="() => (appState = AppState.UploadText)" />
+
+    <template #fallback> Loading...</template>
+  </Suspense>
+
+  <UploadText
+    v-if="appState === AppState.UploadText"
+    :text="text"
+    :setFlashcards="setFlashcards"
+    :on-next="() => (appState = AppState.AnalyzeText)"
+  />
+
+  <Suspense v-if="appState === AppState.AnalyzeText" timeout="0">
+    <WordSelector :text="text" />
+
+    <template #fallback> Loading...</template>
+  </Suspense>
+
+  <FlashCards v-if="appState === AppState.Translate" :flashcards="flashcards" />
 </template>
 
 <style scoped>
@@ -92,6 +64,7 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-width: 500px;
 }
 
 h1 {
@@ -109,13 +82,5 @@ p {
 
 a {
   margin-top: 2rem;
-}
-
-.uploadMethod {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 2rem;
-  gap: 1rem;
 }
 </style>
