@@ -28,11 +28,23 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
 <template class="container">
   <h1>Create Your Fishky Cards</h1>
 
-  <div class="">
-    <button @click="appState = AppState.UploadImage">Img</button>
-    <button @click="appState = AppState.UploadText">Text</button>
-    <button @click="appState = AppState.AnalyzeText" :disabled="!text.length">Analyze</button>
-    <button @click="appState = AppState.Translate" :disabled="!text.length">Translate</button>
+  <div class="main__buttons">
+    <v-btn variant="outlined" @click="appState = AppState.UploadImage">
+      <v-icon icon="mdi-image" class="main__buttons__icon"></v-icon>
+      Img
+    </v-btn>
+    <v-btn variant="outlined" @click="appState = AppState.UploadText">
+      <v-icon icon="mdi-text-box" class="main__buttons__icon"></v-icon>
+      Text
+    </v-btn>
+    <v-btn variant="outlined" @click="appState = AppState.AnalyzeText" :disabled="!text.length">
+      <v-icon icon="mdi-poll" class="main__buttons__icon"></v-icon>
+      Analyze
+    </v-btn>
+    <v-btn variant="outlined" @click="appState = AppState.Translate" :disabled="!text.length">
+      <v-icon icon="mdi-translate" class="main__buttons__icon"></v-icon>
+      Translate
+    </v-btn>
   </div>
 
   <Suspense v-if="appState === AppState.UploadImage" timeout="0">
@@ -65,6 +77,20 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   justify-content: center;
   width: 100%;
   min-width: 500px;
+  gap: 16px;
+}
+
+.main__buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.main__buttons__icon {
+  display: block;
+  margin-right: 8px;
+  height: auto;
 }
 
 h1 {

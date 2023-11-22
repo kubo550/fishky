@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TrashCan from 'vue-material-design-icons/TrashCanOutline.vue'
+// import TrashCan from 'vue-material-design-icons/TrashCanOutline.vue'
 import type { PropType } from 'vue'
 import type { FlashcardType } from '@/lib/types'
 
@@ -32,7 +32,7 @@ defineProps({
     </label>
 
     <button>
-      <TrashCan @click="deleteFlashcard(flashcard.id)" />
+      <!-- <TrashCan @click="deleteFlashcard(flashcard.id)" /> -->
     </button>
   </div>
 </template>

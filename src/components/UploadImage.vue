@@ -8,7 +8,8 @@ const error = ref<string | null>(null)
 const imageProgress = ref(0)
 const imageProgressStatus = ref('')
 
-const imageProgressText = computed(() => `${(imageProgress.value * 100).toFixed(2)}%`)
+const imageProgressPercent = computed(() => imageProgress.value * 100)
+const imageProgressText = computed(() => `${imageProgressPercent.value.toFixed(2)}%`)
 const worker = await createWorker({
   logger: (m) => {
     console.log(m)
@@ -67,36 +68,66 @@ const handleUploadFile = (e: Event) => {
     isLoading.value = false
   }
 }
+
+const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 </script>
 
 <template>
-  <p>Here you can upload your image with text in different languages.</p>
-  <p>
-    We will try to extract text from it and translate it to your native language and create
-    flashcards for you.
-  </p>
+  <div class="upload-image__container">
+    <div class="upload-image__description">
+      <p>Here you can upload your image with text in different languages.</p>
+      <p>
+        We will try to extract text from it and translate it to your native language and create
+        flashcards for you.
+      </p>
 
-  <p>
-    Download template file to see how it should look like in order to upload it correctly
-    <a href="/template-image.png" download>download</a>
-  </p>
+      <p>
+        Download template file to see how it should look like in order to upload it correctly
+        <a href="/template-image.png" download>download</a>
+      </p>
+    </div>
 
-  <input type="file" accept="image/png, image/jpeg" @change="handleUploadFile" />
+    <v-file-input
+      accept="image/*"
+      label="Select image"
+      variant="outlined"
+      prepend-icon="mdi-image"
+      class="file-input"
+      @change="handleUploadFile"
+    ></v-file-input>
 
-  <!--  TODO: -->
-  <!--  <p>or</p>-->
-  <!--  <button>Take a photo</button>-->
+    <!--  TODO: -->
+    <!--  <p>or</p>-->
+    <!--  <button>Take a photo</button>-->
 
-  <div v-if="isLoading">
-    <p>Extracting text from image...</p>
-    <progress :value="imageProgress" max="1" />
-    <p>{{ imageProgressStatus }} - {{ imageProgressText }}</p>
+    <div v-if="isLoading">
+      <v-progress-linear
+        v-if="imageProgressStatus === 'recognizing text'"
+        color="blue-lighten-3"
+        :model-value="imageProgressPercent"
+        :height="9"
+      ></v-progress-linear>
+      <!-- <progress :value="imageProgress" max="1" /> -->
+      <p>
+        {{ capitalize(imageProgressStatus) }}
+        <span v-if="imageProgressStatus === 'recognizing text'"> - {{ imageProgressText }}</span>
+        <span v-else>...</span>
+      </p>
+    </div>
+    <div v-if="error">Error: {{ error }}</div>
   </div>
-  <div v-if="error">Error: {{ error }}</div>
 </template>
 
 <style scoped>
-p {
-  margin-bottom: 1rem;
+.upload-image__container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-input {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
 }
 </style>

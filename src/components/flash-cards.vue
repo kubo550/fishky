@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import PenPlus from 'vue-material-design-icons/PenPlus.vue'
-import BasketUnfill from 'vue-material-design-icons/BasketUnfill.vue'
+// import PenPlus from 'vue-material-design-icons/PenPlus.vue'
+// import BasketUnfill from 'vue-material-design-icons/BasketUnfill.vue'
 
 import { ref } from 'vue'
 import type { FlashcardType } from '@/lib/types'
@@ -38,12 +38,12 @@ const removeEmptyFlashcards = () => {
 
     <div class="buttonContainer">
       <button @click="removeEmptyFlashcards">
-        <BasketUnfill />
+        <!-- <BasketUnfill /> -->
         Remove Empty Flashcards
       </button>
 
       <button @click="addEmptyFlashcard">
-        <PenPlus />
+        <!-- <PenPlus /> -->
         Add Flashcard
       </button>
     </div>

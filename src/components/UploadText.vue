@@ -34,18 +34,32 @@ const text = ref(initialText)
 </script>
 
 <template>
-  <textarea v-model="text" @input="onChange(text)" />
-
-  <button @click="onNext">Next</button>
+  <div class="upload-text__container">
+    <v-textarea
+      :model-value="text"
+      @input="onChange(text)"
+      label="Text"
+      variant="outlined"
+      rows="20"
+      class="upload-text__textarea"
+    ></v-textarea>
+    <v-btn variant="outlined" @click="onNext">
+      next
+      <v-icon icon="mdi-arrow-right" class="upload-text_button-icon"></v-icon>
+    </v-btn>
+  </div>
 </template>
 
 <style scoped>
-textarea {
-  width: 100%;
-  height: 200px;
-  border: 1px solid #333;
-  border-radius: 4px;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
+.upload-text__container {
+}
+.upload-text__textarea {
+  width: 30vw;
+}
+
+.upload-text_button-icon {
+  display: block;
+  height: auto;
+  margin-left: 8px;
 }
 </style>
