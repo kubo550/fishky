@@ -29,19 +29,37 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   <h1>Create Your Fishky Cards</h1>
 
   <div class="main__buttons">
-    <v-btn variant="outlined" @click="appState = AppState.UploadImage">
+    <v-btn
+      variant="outlined"
+      :active="appState === AppState.UploadImage"
+      @click="appState = AppState.UploadImage"
+    >
       <v-icon icon="mdi-image" class="main__buttons__icon"></v-icon>
       Img
     </v-btn>
-    <v-btn variant="outlined" @click="appState = AppState.UploadText">
+    <v-btn
+      variant="outlined"
+      :active="appState === AppState.UploadText"
+      @click="appState = AppState.UploadText"
+    >
       <v-icon icon="mdi-text-box" class="main__buttons__icon"></v-icon>
       Text
     </v-btn>
-    <v-btn variant="outlined" @click="appState = AppState.AnalyzeText" :disabled="!text.length">
+    <v-btn
+      variant="outlined"
+      :active="appState === AppState.AnalyzeText"
+      @click="appState = AppState.AnalyzeText"
+      :disabled="!text.length"
+    >
       <v-icon icon="mdi-poll" class="main__buttons__icon"></v-icon>
       Analyze
     </v-btn>
-    <v-btn variant="outlined" @click="appState = AppState.Translate" :disabled="!text.length">
+    <v-btn
+      variant="outlined"
+      :active="appState === AppState.Translate"
+      @click="appState = AppState.Translate"
+      :disabled="!text.length"
+    >
       <v-icon icon="mdi-translate" class="main__buttons__icon"></v-icon>
       Translate
     </v-btn>
