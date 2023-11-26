@@ -1,51 +1,44 @@
 <script setup lang="ts">
-import type { PropType } from 'vue'
-import { ref } from 'vue'
-import type { FlashcardType } from '@/lib/types'
-
-const { text: initialText, onChange } = defineProps({
+const { text, getPhrasesButtonLoading } = defineProps({
   text: {
     type: String,
     required: false,
     default: ''
   },
-  onChange: {
-    type: Function as PropType<(newText: string) => void>,
+  getPhrasesButtonLoading: {
+    type: Boolean,
     required: false,
-    default: () => {}
-  },
-  onButtonClick: {
-    type: Function as PropType<() => void>,
-    required: false,
-    default: () => {}
-  },
-  setFlashcards: {
-    type: Function as PropType<(newFlashcards: FlashcardType[]) => void>,
-    required: true
-  },
-  onNext: {
-    type: Function as PropType<() => void>,
-    required: false,
-    default: () => {}
+    default: false
   }
 })
 
-const text = ref(initialText)
+const emit = defineEmits<{
+  (e: 'onChange', newText: string): void
+  (e: 'onGetPhrases'): void
+}>()
 </script>
 
 <template>
   <div class="upload-text__container">
     <v-textarea
       :model-value="text"
-      @input="onChange(text)"
+      @input="emit('onChange', $event.target.value)"
       label="Text"
       variant="outlined"
       rows="20"
       class="upload-text__textarea"
     ></v-textarea>
-    <v-btn variant="outlined" @click="onNext">
-      next
-      <v-icon icon="mdi-arrow-right" class="upload-text_button-icon"></v-icon>
+    <v-btn
+      :disabled="getPhrasesButtonLoading"
+      variant="outlined"
+      class="upload-text__button"
+      @click="emit('onGetPhrases')"
+    >
+      <template v-if="!getPhrasesButtonLoading">
+        <v-icon icon="mdi-set-split" class="upload-text__button-icon"></v-icon>
+        get phrases from text
+      </template>
+      <v-progress-circular v-else indeterminate :size="20" :width="2"></v-progress-circular>
     </v-btn>
   </div>
 </template>
@@ -55,9 +48,12 @@ const text = ref(initialText)
   width: 30vw;
 }
 
-.upload-text_button-icon {
+.upload-text__button {
+  min-width: 230px;
+}
+.upload-text__button-icon {
   display: block;
   height: auto;
-  margin-left: 8px;
+  margin-right: 8px;
 }
 </style>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { FlashcardType } from '@/lib/types'
-import FlashCards from '@/components/flash-cards.vue'
 import UploadImage from '@/components/UploadImage.vue'
 import UploadText from '@/components/UploadText.vue'
 import WordSelector from '@/components/WordSelector.vue'
+import { apiClient } from '@/lib/api-client'
+import type { Phrase } from '@/lib/types'
+import { ref } from 'vue'
 enum AppState {
   UploadImage = 'upload-image',
   UploadText = 'upload-text',
@@ -15,13 +15,26 @@ enum AppState {
 
 const appState = ref<AppState>(AppState.UploadText)
 const text = ref('')
-const flashcards = ref<FlashcardType[]>([])
+const phrases = ref<Phrase[]>([])
+const getPhrasesButtonLoading = ref<boolean>(false)
 
 const setText = (newText: string) => {
   text.value = newText
 }
-const setFlashcards = (newFlashcards: FlashcardType[]) => {
-  flashcards.value = newFlashcards
+
+const getPhrasesHandler = async () => {
+  getPhrasesButtonLoading.value = true
+  await getPhrases()
+  appState.value = AppState.AnalyzeText
+  getPhrasesButtonLoading.value = false
+}
+
+const getPhrases = async () => {
+  phrases.value = await apiClient.getPhrases(text.value)
+}
+
+const onPhraseDeleteHandler = (id: string) => {
+  phrases.value = phrases.value.filter((phrase) => phrase.id !== id)
 }
 </script>
 
@@ -49,7 +62,7 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
       variant="outlined"
       :active="appState === AppState.AnalyzeText"
       @click="appState = AppState.AnalyzeText"
-      :disabled="!text.length"
+      :disabled="!phrases.length"
     >
       <v-icon icon="mdi-poll" class="main__buttons__icon"></v-icon>
       Analyze
@@ -58,7 +71,7 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
       variant="outlined"
       :active="appState === AppState.Translate"
       @click="appState = AppState.Translate"
-      :disabled="!text.length"
+      :disabled="!phrases.length"
     >
       <v-icon icon="mdi-translate" class="main__buttons__icon"></v-icon>
       Translate
@@ -74,17 +87,17 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   <UploadText
     v-if="appState === AppState.UploadText"
     :text="text"
-    :setFlashcards="setFlashcards"
-    :on-next="() => (appState = AppState.AnalyzeText)"
+    :get-phrases-button-loading="getPhrasesButtonLoading"
+    @on-get-phrases="getPhrasesHandler"
+    @on-change="setText"
   />
 
   <Suspense v-if="appState === AppState.AnalyzeText" timeout="0">
-    <WordSelector :text="text" />
-
-    <template #fallback> Loading...</template>
+    <WordSelector :phrases="phrases" @on-phrase-delete="onPhraseDeleteHandler" />
+    <template #fallback>Loading...</template>
   </Suspense>
 
-  <FlashCards v-if="appState === AppState.Translate" :flashcards="flashcards" />
+  <!-- <FlashCards v-if="appState === AppState.Translate" :flashcards="flashcards" /> -->
 </template>
 
 <style scoped>
@@ -109,7 +122,6 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   display: block;
   margin-right: 8px;
   height: auto;
-  margin-bottom: 10px;
 }
 
 h1 {
