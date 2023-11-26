@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
         black hole!
       </p>
 
-      <RouterLink to="/about">
+      <RouterLink to="/create">
         <button>Get Started</button>
       </RouterLink>
     </div>
