@@ -51,8 +51,6 @@ const text = ref(initialText)
 </template>
 
 <style scoped>
-.upload-text__container {
-}
 .upload-text__textarea {
   width: 30vw;
 }

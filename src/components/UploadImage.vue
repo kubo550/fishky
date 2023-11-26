@@ -107,7 +107,6 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
         :model-value="imageProgressPercent"
         :height="9"
       ></v-progress-linear>
-      <!-- <progress :value="imageProgress" max="1" /> -->
       <p>
         {{ capitalize(imageProgressStatus) }}
         <span v-if="imageProgressStatus === 'recognizing text'"> - {{ imageProgressText }}</span>
