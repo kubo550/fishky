@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import { ref } from 'vue'
-import { extractPhrasesFromText, premiumExtractPhrasesFromText } from '@/lib/utils'
+import { apiClient } from '@/lib/api-client'
 
 const { text } = defineProps({
   text: {
@@ -15,7 +15,11 @@ const { text } = defineProps({
   }
 })
 
-const phrases = ref<{ id: string; phrase: string }[]>(await premiumExtractPhrasesFromText(text))
+const phrases = ref<{ id: string; phrase: string }[]>([])
+
+;(async () => {
+  phrases.value = await apiClient.getPhrases(text)
+})()
 
 const removePhrase = (id: string) => {
   phrases.value = phrases.value.filter((p) => p.id !== id)

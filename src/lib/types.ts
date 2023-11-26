@@ -3,3 +3,9 @@ export type FlashcardType = {
   term: string
   meaning: string
 }
+
+export type Phrase = {
+  id?: string
+  phrase?: string
+  meaning?: string
+}

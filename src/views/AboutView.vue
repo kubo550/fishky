@@ -109,6 +109,7 @@ const setFlashcards = (newFlashcards: FlashcardType[]) => {
   display: block;
   margin-right: 8px;
   height: auto;
+  margin-bottom: 10px;
 }
 
 h1 {
