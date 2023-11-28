@@ -33,7 +33,6 @@ const emit = defineEmits<{
       variant="outlined"
       rows="20"
       class="upload-text__textarea"
-      :autofocus="true"
       placeholder="Paste your text here"
       :rules="[
         (newText) => !!newText || 'Please enter some text',

@@ -10,6 +10,7 @@ const { phrases } = defineProps({
 })
 
 const emit = defineEmits<{
+  (e: 'onPhraseAdd'): void
   (e: 'onPhraseDelete', id: string): void
   (e: 'onSave', newText: string): void
 }>()
@@ -27,6 +28,11 @@ const emit = defineEmits<{
         @click:append="emit('onPhraseDelete', phrase.id)"
       ></v-text-field>
     </div>
+
+    <v-btn class="add-phrase" variant="outlined" @click="emit('onPhraseAdd')">
+      <v-icon icon="mdi-plus" class="main__buttons__icon"></v-icon>
+      Add Phrase
+    </v-btn>
   </div>
 
   <!-- <button @click="$emit('onButtonClick', phrases)">TRANSLATE </button> -->
@@ -44,5 +50,10 @@ const emit = defineEmits<{
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+.add-phrase {
+  margin-top: 8px;
+  width: 60%;
 }
 </style>
