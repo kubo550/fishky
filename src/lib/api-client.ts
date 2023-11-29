@@ -27,11 +27,17 @@ class ApiClient {
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(
+          phrases.map((phrase) => ({
+            ...phrase,
+            meaning: phrase.meaning || phrase.phrase
+          }))
+        )
+      }, 2000)
+    })
     // TODO: impolement this
-    return phrases.map((phrase) => ({
-      ...phrase,
-      meaning: phrase.meaning || phrase.phrase
-    }))
   }
 }
 
