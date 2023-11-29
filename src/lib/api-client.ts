@@ -1,6 +1,13 @@
 import type { Phrase } from '@/lib/types'
 import axios from 'axios'
 
+function poorTranslatePhrases(phrases: Phrase[]) {
+  return phrases.map((phrase) => ({
+    ...phrase,
+    meaning: phrase.meaning || phrase.phrase
+  }))
+}
+
 class ApiClient {
   private readonly instance: ReturnType<typeof axios.create>
 
@@ -17,9 +24,7 @@ class ApiClient {
   }
 
   async getPhrases(text: string): Promise<Phrase[]> {
-    const url = `${this.baseUrl}/extract-phrases`
-
-    const response = await this.instance.post<{ phrases: Phrase[] }>(url, {
+    const response = await this.instance.post<{ phrases: Phrase[] }>('/extract-phrases', {
       text
     })
 
@@ -27,17 +32,14 @@ class ApiClient {
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          phrases.map((phrase) => ({
-            ...phrase,
-            meaning: phrase.meaning || phrase.phrase
-          }))
-        )
-      }, 2000)
+    return poorTranslatePhrases(phrases)
+
+    const response = await this.instance.post<{ response: Phrase[] }>('/translate', {
+      phrases,
+      targetLang
     })
-    // TODO: impolement this
+
+    return response.data.response
   }
 }
 
