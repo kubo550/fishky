@@ -11,7 +11,7 @@ const { phrases } = defineProps({
 
 const emit = defineEmits<{
   (e: 'onPhraseDelete', id: string): void
-  (e: 'onSave', newText: string): void
+  (e: 'onTranslatePhrases'): void
 }>()
 </script>
 
@@ -29,7 +29,10 @@ const emit = defineEmits<{
     </div>
   </div>
 
-  <!-- <button @click="$emit('onButtonClick', phrases)">TRANSLATE </button> -->
+  <v-btn variant="outlined" @click="emit('onTranslatePhrases')">
+    <v-icon icon="mdi-translate" class="translate-button__icon"></v-icon>
+    Translate phrases
+  </v-btn>
 </template>
 
 <style scoped>
@@ -44,5 +47,11 @@ const emit = defineEmits<{
   width: 100%;
   display: flex;
   align-items: center;
+}
+
+.translate-button__icon {
+  display: block;
+  margin-right: 8px;
+  height: auto;
 }
 </style>

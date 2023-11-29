@@ -36,6 +36,10 @@ const getPhrases = async () => {
 const onPhraseDeleteHandler = (id: string) => {
   phrases.value = phrases.value.filter((phrase) => phrase.id !== id)
 }
+
+const onTranslatePhrasesHandler = async () => {
+  appState.value = AppState.Translate
+}
 </script>
 
 <template class="container">
@@ -93,7 +97,11 @@ const onPhraseDeleteHandler = (id: string) => {
   />
 
   <Suspense v-if="appState === AppState.AnalyzeText" timeout="0">
-    <WordSelector :phrases="phrases" @on-phrase-delete="onPhraseDeleteHandler" />
+    <WordSelector
+      :phrases="phrases"
+      @on-phrase-delete="onPhraseDeleteHandler"
+      @on-translate-phrases="onTranslatePhrasesHandler"
+    />
     <template #fallback>Loading...</template>
   </Suspense>
 
