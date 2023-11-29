@@ -24,9 +24,7 @@ class ApiClient {
   }
 
   async getPhrases(text: string): Promise<Phrase[]> {
-    const url = `${this.baseUrl}/extract-phrases`
-
-    const response = await this.instance.post<{ phrases: Phrase[] }>(url, {
+    const response = await this.instance.post<{ phrases: Phrase[] }>('/extract-phrases', {
       text
     })
 
@@ -34,11 +32,9 @@ class ApiClient {
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
-    // return poorTranslatePhrases(phrases)
+    return poorTranslatePhrases(phrases)
 
-    const url = `${this.baseUrl}/translate`
-
-    const response = await this.instance.post<{ response: Phrase[] }>(url, {
+    const response = await this.instance.post<{ response: Phrase[] }>('/translate', {
       phrases,
       targetLang
     })
