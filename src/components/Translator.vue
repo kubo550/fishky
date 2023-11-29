@@ -19,7 +19,7 @@ const emit = defineEmits<{
   <div class="phrases">
     <div v-for="(phrase, index) in phrases" :key="phrase.id" class="phrase">
       <v-text-field
-        class="phrase__phrase"
+        class="phrase__phrase-input"
         v-model="phrase.phrase"
         :label="`Phrase ${index + 1}`"
         variant="filled"
@@ -27,7 +27,7 @@ const emit = defineEmits<{
       ></v-text-field>
 
       <v-text-field
-        class="phrase__meaning"
+        class="phrase__meaning-input"
         v-model="phrase.meaning"
         :label="`Meaning ${index + 1}`"
         variant="filled"
@@ -63,11 +63,11 @@ const emit = defineEmits<{
   justify-content: center;
 }
 
-.phrase__phrase {
+.phrase__phrase-input {
   width: 100%;
 }
 
-.phrase__meaning {
+.phrase__meaning-input {
   width: 100%;
   margin: 0 0 0 16px;
 }
