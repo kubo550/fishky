@@ -27,11 +27,19 @@ class ApiClient {
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
-    // TODO: impolement this
     return phrases.map((phrase) => ({
       ...phrase,
       meaning: phrase.meaning || phrase.phrase
     }))
+
+    const url = `${this.baseUrl}/translate`
+
+    const response = await this.instance.post<{ response: Phrase[] }>(url, {
+      phrases,
+      targetLang
+    })
+
+    return response.data.response
   }
 }
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Phrase } from '@/lib/types'
 import type { PropType } from 'vue'
+import type { Phrase } from '@/lib/types'
 
 const { phrases } = defineProps({
   phrases: {
@@ -12,7 +12,7 @@ const { phrases } = defineProps({
 const emit = defineEmits<{
   (e: 'onPhraseAdd'): void
   (e: 'onPhraseDelete', id: string): void
-  (e: 'onTranslate', phrases: Phrase[]): void
+  (e: 'onSave', phrases: Phrase[]): void
 }>()
 </script>
 
@@ -20,12 +20,20 @@ const emit = defineEmits<{
   <div class="phrases">
     <div v-for="(phrase, index) in phrases" :key="phrase.id" class="phrase">
       <v-text-field
+        class="phrase__phrase"
         v-model="phrase.phrase"
         :label="`Phrase ${index + 1}`"
-        :append-icon="'mdi-delete'"
         variant="filled"
         type="text"
-        @click:append="emit('onPhraseDelete', phrase.id)"
+      ></v-text-field>
+
+      <v-text-field
+        class="phrase__meaning"
+        v-model="phrase.meaning"
+        :label="`Meaning ${index + 1}`"
+        variant="filled"
+        type="text"
+        :append-icon="'mdi-delete'"
       ></v-text-field>
     </div>
 
@@ -35,9 +43,9 @@ const emit = defineEmits<{
     </v-btn>
   </div>
 
-  <v-btn @click="emit('onTranslate', phrases)">
+  <v-btn @click="emit('onSave', phrases)" class="save">
     <v-icon icon="mdi-translate" class="main__buttons__icon"></v-icon>
-    Translate
+    Save
   </v-btn>
 </template>
 
@@ -45,7 +53,7 @@ const emit = defineEmits<{
 .phrases {
   margin-top: 8px;
   display: grid;
-  grid-template-columns: repeat(3, 250px);
+  grid-template-columns: 550px;
   gap: 4px 16px;
 }
 
@@ -53,10 +61,19 @@ const emit = defineEmits<{
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-.add-phrase {
-  margin-top: 8px;
-  width: 60%;
+.phrase__phrase {
+  width: 100%;
+}
+
+.phrase__meaning {
+  width: 100%;
+  margin: 0 0 0 16px;
+}
+
+.save {
+  margin-top: 20px;
 }
 </style>

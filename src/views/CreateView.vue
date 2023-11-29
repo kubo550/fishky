@@ -6,6 +6,7 @@ import { apiClient } from '@/lib/api-client'
 import type { Phrase } from '@/lib/types'
 import { ref } from 'vue'
 import _ from 'lodash'
+import Translator from '@/components/Translator.vue'
 enum AppState {
   UploadImage = 'upload-image',
   UploadText = 'upload-text',
@@ -40,7 +41,12 @@ const onPhraseDeleteHandler = (id: string) => {
 
 const onPhraseAddHandler = () => {
   if (_.last(phrases.value)?.phrase?.trim() === '') return
-  phrases.value = [...phrases.value, { id: Math.random().toString(), phrase: '' }]
+  phrases.value = [...phrases.value, { id: Math.random().toString(), phrase: '', meaning: '' }]
+}
+
+const onTranslate = async (phrasesToTranslate: Phrase[]) => {
+  phrases.value = await apiClient.translatePhrases(phrasesToTranslate)
+  appState.value = AppState.Translate
 }
 </script>
 
@@ -103,11 +109,17 @@ const onPhraseAddHandler = () => {
       :phrases="phrases"
       @on-phrase-delete="onPhraseDeleteHandler"
       @on-phrase-add="onPhraseAddHandler"
+      @on-translate="onTranslate"
     />
     <template #fallback>Loading...</template>
   </Suspense>
 
-  <!-- <FlashCards v-if="appState === AppState.Translate" :flashcards="flashcards" /> -->
+  <Translator
+    v-if="appState === AppState.Translate"
+    :phrases="phrases"
+    @on-phrase-add="onPhraseAddHandler"
+    @on-phrase-delete="onPhraseDeleteHandler"
+  />
 </template>
 
 <style scoped>
