@@ -8,7 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
       <div class="wrapper">
         <nav>
           <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
+          <RouterLink to="/create">Create</RouterLink>
         </nav>
       </div>
     </header>
@@ -90,7 +90,6 @@ nav a:first-of-type {
 }
 .content-wrapper {
   width: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;

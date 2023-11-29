@@ -5,6 +5,7 @@ import WordSelector from '@/components/WordSelector.vue'
 import { apiClient } from '@/lib/api-client'
 import type { Phrase } from '@/lib/types'
 import { ref } from 'vue'
+import _ from 'lodash'
 enum AppState {
   UploadImage = 'upload-image',
   UploadText = 'upload-text',
@@ -39,6 +40,11 @@ const onPhraseDeleteHandler = (id: string) => {
 
 const onTranslatePhrasesHandler = async () => {
   appState.value = AppState.Translate
+}
+
+const onPhraseAddHandler = () => {
+  if (_.last(phrases.value)?.phrase?.trim() === '') return
+  phrases.value = [...phrases.value, { id: Math.random().toString(), phrase: '' }]
 }
 </script>
 
@@ -101,6 +107,7 @@ const onTranslatePhrasesHandler = async () => {
       :phrases="phrases"
       @on-phrase-delete="onPhraseDeleteHandler"
       @on-translate-phrases="onTranslatePhrasesHandler"
+      @on-phrase-add="onPhraseAddHandler"
     />
     <template #fallback>Loading...</template>
   </Suspense>

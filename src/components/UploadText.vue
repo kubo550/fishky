@@ -20,6 +20,12 @@ const emit = defineEmits<{
 
 <template>
   <div class="upload-text__container">
+    <p>Paste any foreign language text into the box below.</p>
+    <p>
+      This tool will intelligently break it down into smaller segments for your language learning
+      flashcards.
+    </p>
+    <p>Let's start learning!</p>
     <v-textarea
       :model-value="text"
       @input="emit('onChange', $event.target.value)"
@@ -27,6 +33,11 @@ const emit = defineEmits<{
       variant="outlined"
       rows="20"
       class="upload-text__textarea"
+      placeholder="Paste your text here"
+      :rules="[
+        (newText) => !!newText || 'Please enter some text',
+        (newText) => newText.length < 10000 || 'Text is too long'
+      ]"
     ></v-textarea>
     <v-btn
       :disabled="getPhrasesButtonLoading"
@@ -50,10 +61,14 @@ const emit = defineEmits<{
 
 .upload-text__button {
   min-width: 230px;
+  margin-left: 50%;
 }
 .upload-text__button-icon {
   display: block;
   height: auto;
   margin-right: 8px;
+}
+p {
+  margin: 8px 0;
 }
 </style>
