@@ -39,18 +39,14 @@ const onPhraseDeleteHandler = (id: string) => {
   phrases.value = phrases.value.filter((phrase) => phrase.id !== id)
 }
 
-const onTranslatePhrasesHandler = async () => {
+const onTranslatePhrasesHandler = async (phrasesToTranslate: Phrase[]) => {
+  phrases.value = await apiClient.translatePhrases(phrasesToTranslate)
   appState.value = AppState.Translate
 }
 
 const onPhraseAddHandler = () => {
   if (_.last(phrases.value)?.phrase?.trim() === '') return
   phrases.value = [...phrases.value, { id: Math.random().toString(), phrase: '', meaning: '' }]
-}
-
-const onTranslate = async (phrasesToTranslate: Phrase[]) => {
-  phrases.value = await apiClient.translatePhrases(phrasesToTranslate)
-  appState.value = AppState.Translate
 }
 </script>
 
@@ -114,7 +110,6 @@ const onTranslate = async (phrasesToTranslate: Phrase[]) => {
       @on-phrase-delete="onPhraseDeleteHandler"
       @on-translate-phrases="onTranslatePhrasesHandler"
       @on-phrase-add="onPhraseAddHandler"
-      @on-translate="onTranslate"
     />
     <template #fallback>Loading...</template>
   </Suspense>

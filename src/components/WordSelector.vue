@@ -12,7 +12,7 @@ const { phrases } = defineProps({
 const emit = defineEmits<{
   (e: 'onPhraseAdd'): void
   (e: 'onPhraseDelete', id: string): void
-  (e: 'onTranslatePhrases'): void
+  (e: 'onTranslatePhrases', phrases: Phrase[]): void
 }>()
 </script>
 
@@ -35,7 +35,7 @@ const emit = defineEmits<{
     </v-btn>
   </div>
 
-  <v-btn variant="outlined" @click="emit('onTranslatePhrases')">
+  <v-btn variant="outlined" @click="emit('onTranslatePhrases', phrases)">
     <v-icon icon="mdi-translate" class="translate-button__icon"></v-icon>
     Translate phrases
   </v-btn>
