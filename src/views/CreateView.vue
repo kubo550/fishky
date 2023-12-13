@@ -7,12 +7,14 @@ import type { Phrase } from '@/lib/types'
 import { ref } from 'vue'
 import _ from 'lodash'
 import Translator from '@/components/Translator.vue'
+import SaveFlashcards from '@/components/SaveFlashcards.vue'
 enum AppState {
   UploadImage = 'upload-image',
   UploadText = 'upload-text',
   AnalyzeText = 'analyze-text',
   Translate = 'translate',
-  Flashcards = 'flashcards'
+  Flashcards = 'flashcards',
+  Saving = 'saving'
 }
 
 const appState = ref<AppState>(AppState.UploadText)
@@ -93,7 +95,9 @@ const onPhraseAddHandler = () => {
   <Suspense v-if="appState === AppState.UploadImage" timeout="0">
     <UploadImage :set-text="setText" :on-next="() => (appState = AppState.UploadText)" />
 
-    <template #fallback> Loading...</template>
+    <template #fallback>
+      <p>Loading...</p>
+    </template>
   </Suspense>
 
   <UploadText
@@ -119,7 +123,10 @@ const onPhraseAddHandler = () => {
     :phrases="phrases"
     @on-phrase-add="onPhraseAddHandler"
     @on-phrase-delete="onPhraseDeleteHandler"
+    @on-save="() => (appState = AppState.Saving)"
   />
+
+  <SaveFlashcards v-if="appState === AppState.Saving" :phrases="phrases" />
 </template>
 
 <style scoped>
