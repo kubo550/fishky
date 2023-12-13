@@ -21,6 +21,7 @@ const appState = ref<AppState>(AppState.UploadText)
 const text = ref('')
 const phrases = ref<Phrase[]>([])
 const getPhrasesButtonLoading = ref<boolean>(false)
+const translatingPhrasesButtonLoading = ref<boolean>(false)
 
 const setText = (newText: string) => {
   text.value = newText
@@ -33,22 +34,32 @@ const getPhrasesHandler = async () => {
   getPhrasesButtonLoading.value = false
 }
 
-const getPhrases = async () => {
-  phrases.value = await apiClient.getPhrases(text.value)
+const onTranslatePhrasesHandler = async () => {
+  translatingPhrasesButtonLoading.value = true
+  await translatePhrases()
+  appState.value = AppState.Translate
+  translatingPhrasesButtonLoading.value = false
+}
+
+const isTranslateButtonDisabled = () => {
+  return phrases.value.every((phrase) => !phrase.meaning)
 }
 
 const onPhraseDeleteHandler = (id: string) => {
   phrases.value = phrases.value.filter((phrase) => phrase.id !== id)
 }
 
-const onTranslatePhrasesHandler = async (phrasesToTranslate: Phrase[]) => {
-  phrases.value = await apiClient.translatePhrases(phrasesToTranslate)
-  appState.value = AppState.Translate
-}
-
 const onPhraseAddHandler = () => {
   if (_.last(phrases.value)?.phrase?.trim() === '') return
   phrases.value = [...phrases.value, { id: Math.random().toString(), phrase: '', meaning: '' }]
+}
+
+const getPhrases = async () => {
+  phrases.value = await apiClient.getPhrases(text.value)
+}
+
+const translatePhrases = async () => {
+  phrases.value = await apiClient.translatePhrases(phrases.value, 'pl')
 }
 </script>
 
@@ -75,8 +86,8 @@ const onPhraseAddHandler = () => {
     <v-btn
       variant="outlined"
       :active="appState === AppState.AnalyzeText"
-      @click="appState = AppState.AnalyzeText"
       :disabled="!phrases.length"
+      @click="appState = AppState.AnalyzeText"
     >
       <v-icon icon="mdi-poll" class="main__buttons__icon"></v-icon>
       Analyze
@@ -84,8 +95,8 @@ const onPhraseAddHandler = () => {
     <v-btn
       variant="outlined"
       :active="appState === AppState.Translate"
+      :disabled="isTranslateButtonDisabled()"
       @click="appState = AppState.Translate"
-      :disabled="!phrases.length"
     >
       <v-icon icon="mdi-translate" class="main__buttons__icon"></v-icon>
       Translate
@@ -111,6 +122,7 @@ const onPhraseAddHandler = () => {
   <Suspense v-if="appState === AppState.AnalyzeText" timeout="0">
     <WordSelector
       :phrases="phrases"
+      :translatingPhrases="translatingPhrasesButtonLoading"
       @on-phrase-delete="onPhraseDeleteHandler"
       @on-translate-phrases="onTranslatePhrasesHandler"
       @on-phrase-add="onPhraseAddHandler"
@@ -143,8 +155,8 @@ const onPhraseAddHandler = () => {
 .main__buttons {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
-  margin-bottom: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
 .main__buttons__icon {

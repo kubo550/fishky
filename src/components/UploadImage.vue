@@ -121,7 +121,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 .upload-image__container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
 }
 
 .file-input {
