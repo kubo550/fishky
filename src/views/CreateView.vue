@@ -135,10 +135,10 @@ const translatePhrases = async () => {
     :phrases="phrases"
     @on-phrase-add="onPhraseAddHandler"
     @on-phrase-delete="onPhraseDeleteHandler"
-    @on-save="() => (appState = AppState.Saving)"
+    @on-prepare="() => (appState = AppState.Saving)"
   />
 
-  <SaveFlashcards v-if="appState === AppState.Saving" :phrases="phrases" />
+  <SaveFlashcards v-if="appState === AppState.Saving" :phrases="phrases" @on-save="console.log" />
 </template>
 
 <style scoped>

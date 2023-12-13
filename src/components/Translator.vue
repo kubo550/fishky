@@ -12,6 +12,7 @@ const { phrases } = defineProps({
 const emit = defineEmits<{
   (e: 'onPhraseAdd'): void
   (e: 'onPhraseDelete', id: string): void
+  (e: 'onPrepare'): void
 }>()
 </script>
 
@@ -42,7 +43,7 @@ const emit = defineEmits<{
     </v-btn>
   </div>
 
-  <v-btn variant="outlined" class="save-button">
+  <v-btn variant="outlined" class="save-button" @click="emit('onPrepare')">
     <v-icon icon="mdi-translate" class="button__icon"></v-icon>
     Save
   </v-btn>
