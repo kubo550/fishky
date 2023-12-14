@@ -2,6 +2,8 @@
 import type { PropType } from 'vue'
 import type { Phrase } from '@/lib/types'
 import { ref } from 'vue'
+import { apiClient } from '@/lib/api-client'
+import { toast } from 'vue3-toastify'
 
 const { phrases } = defineProps({
   phrases: {
@@ -11,9 +13,29 @@ const { phrases } = defineProps({
 })
 const name = ref('')
 
-const emit = defineEmits<{
-  (e: 'onSave', phrases: Phrase[], setName: string): void
-}>()
+const isSaving = ref(false)
+const error = ref<string | null>(null)
+const isSaved = ref(false)
+
+const saveFlashcardsSet = async (setName: string, flashcards: Phrase[]) => {
+  try {
+    error.value = null
+    isSaving.value = true
+    await apiClient.saveFlashcardsSet({ setName, flashcards })
+    isSaving.value = false
+    toast(`Flashcards set saved!`, {
+      type: 'success',
+      theme: 'dark',
+      position: 'bottom-center',
+      pauseOnHover: false
+    })
+    // TODO: add confetti animation
+    isSaved.value = true
+  } catch (e) {
+    error.value = 'Something went wrong. Please try again later.'
+    isSaving.value = false
+  }
+}
 </script>
 
 <template>
@@ -42,9 +64,20 @@ const emit = defineEmits<{
       </v-carousel-item>
     </v-carousel>
 
-    <v-btn variant="outlined" class="mt-4" @click="emit('onSave', phrases, name)">
-      <v-icon icon="mdi-content-save"></v-icon>
-      Save
+    <v-btn
+      v-if="!isSaved"
+      :disabled="isSaving || isSaved"
+      variant="outlined"
+      class="mt-4"
+      @click="saveFlashcardsSet"
+    >
+      <v-icon icon="mdi-content-save" class="mr-2"></v-icon>
+      {{ isSaving ? 'Saving...' : 'Save' }}
+    </v-btn>
+
+    <v-btn v-if="isSaved" variant="outlined" class="mt-4" @click="isSaved = false">
+      <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>
+      Go to flashcards
     </v-btn>
   </v-container>
 </template>

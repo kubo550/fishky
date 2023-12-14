@@ -41,6 +41,16 @@ class ApiClient {
 
     return response.data.response
   }
+
+  saveFlashcardsSet(param: { setName: string; flashcards: Phrase[] }) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ data: { flashcardsSetId: '123' } })
+      }, 1000)
+    })
+    // TODO @kuba implement this
+    // return this.instance.post('/flashcards', param)
+  }
 }
 
 function throwError(err: string) {
