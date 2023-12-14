@@ -45,7 +45,7 @@ const emit = defineEmits<{
 
   <v-btn variant="outlined" class="save-button" @click="emit('onPrepare')">
     <v-icon icon="mdi-translate" class="button__icon"></v-icon>
-    Save
+    Summarize
   </v-btn>
 </template>
 
