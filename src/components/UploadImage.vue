@@ -82,7 +82,7 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
       </p>
 
       <p>
-        Download template file to see how it should look like in order to upload it correctly
+        Download the template file to see how it should look in order to upload it correctly
         <a href="/template-image.png" download>download</a>
       </p>
     </div>

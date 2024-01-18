@@ -32,7 +32,7 @@ class ApiClient {
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
-    return poorTranslatePhrases(phrases)
+    // return poorTranslatePhrases(phrases)
 
     const response = await this.instance.post<{ response: Phrase[] }>('/translate', {
       phrases,
