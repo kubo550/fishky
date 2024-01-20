@@ -34,6 +34,7 @@ const emit = defineEmits<{
         variant="filled"
         type="text"
         :append-icon="'mdi-delete'"
+        @click:append="emit('onPhraseDelete', phrase.id)"
       ></v-text-field>
     </div>
 

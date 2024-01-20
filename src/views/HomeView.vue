@@ -5,7 +5,7 @@ import { RouterLink } from 'vue-router'
 <template>
   <main>
     <div class="side">
-      <img src="https://placehold.co/600x400" alt="Flashcards" />
+      <img src="src/assets/flashcards-landing.png" alt="Flashcards" />
     </div>
     <div class="side">
       <h1>Add words to your custom <span> flashcards </span></h1>

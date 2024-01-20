@@ -1,5 +1,6 @@
 import type { Phrase } from '@/lib/types'
 import axios from 'axios'
+import _ from 'lodash'
 
 function poorTranslatePhrases(phrases: Phrase[]) {
   return phrases.map((phrase) => ({
@@ -28,7 +29,7 @@ class ApiClient {
       text
     })
 
-    return response.data.phrases
+    return _.uniqBy(response.data.phrases, 'phrase')
   }
 
   async translatePhrases(phrases: Phrase[], targetLang: string = 'PL'): Promise<Phrase[]> {
