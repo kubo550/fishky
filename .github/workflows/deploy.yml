@@ -1,29 +1,29 @@
-name: Build and deploy
-
+name: Deploy to Github Pages
 on:
   push:
     branches:
       - main
 
 jobs:
-  build:
+  deploy:
+    name: Deploy Application
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout Repo
         uses: actions/checkout@main
+      - name: Create Node Environment
+        uses: actions/setup-node@v1
         with:
-          persist-credentials: false
-
-      - name: Install 🔧
-        run: yarn install
-
-      - name: Build 🏗️
+          node-version: 10.x
+      - name: Install Packages and Build Application
         run: |
-          yarn clean
+          npm install -g @vue/cli yarn
+          yarn install
           yarn build
-      - name: Deploy to GH Pages 🚀
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: public
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: master
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
