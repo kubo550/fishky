@@ -1,29 +1,33 @@
-name: Deploy to Github Pages
+name: Deploy to GitHub Pages
+
 on:
   push:
     branches:
       - main
 
 jobs:
-  deploy:
-    name: Deploy Application
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@main
-      - name: Create Node Environment
+      - name: Checkout Source
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 10.x
-      - name: Install Packages and Build Application
-        run: |
-          npm install -g @vue/cli yarn
-          yarn install
-          yarn build
-      - name: Deploy
-        uses: s0/git-publish-subdir-action@develop
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
         env:
-          REPO: self
-          BRANCH: master
-          FOLDER: dist
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_ENV: 'production'
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.4
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true
