@@ -9,6 +9,7 @@ import { RouterLink } from 'vue-router'
     </div>
     <div class="side">
       <h1>Add words to your custom <span> flashcards </span></h1>
+
       <p>
         Flashcards are nothing but lightning bolts in the world of learning. You simply show them to
         your brain, and it goes "BOOM" - information gets absorbed faster than light rays into a
