@@ -86,4 +86,17 @@ const emit = defineEmits<{
   margin-right: 8px;
   height: auto;
 }
+
+@media (max-width: 825px) {
+  .phrases {
+    grid-template-columns: repeat(2, 250px);
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .phrases {
+    grid-template-columns: 250px;
+  }
+}
 </style>

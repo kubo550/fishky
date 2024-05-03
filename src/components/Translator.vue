@@ -83,4 +83,22 @@ const emit = defineEmits<{
 .save-button {
   margin-top: 20px;
 }
+
+@media (max-width: 600px) {
+  .phrases {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .phrase {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .phrase__meaning-input {
+    margin: 0;
+  }
+}
 </style>

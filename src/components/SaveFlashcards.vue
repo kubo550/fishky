@@ -108,6 +108,7 @@ const handleCopyToClipboard = () => {
 .container {
   margin-top: 8px;
   max-width: 660px;
+  min-width: auto;
 }
 form {
   display: flex;
@@ -119,5 +120,9 @@ form {
 
 .input {
   width: 100%;
+}
+
+.text-h4, .text-h6 {
+  text-align: center;
 }
 </style>

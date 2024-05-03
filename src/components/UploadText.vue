@@ -65,7 +65,7 @@ const emit = defineEmits<{
   gap: 16px;
 }
 .upload-text__textarea {
-  width: 45vw;
+  width: 100%;
 }
 
 .upload-text__button {

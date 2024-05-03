@@ -181,4 +181,10 @@ p {
 a {
   margin-top: 2rem;
 }
+
+@media (max-width: 550px) {
+  .main__buttons {
+    flex-direction: column;
+  }
+}
 </style>
