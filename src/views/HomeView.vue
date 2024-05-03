@@ -73,4 +73,10 @@ button {
   font-weight: 500;
   cursor: pointer;
 }
+
+@media (max-width: 1214px) {
+  main {
+    flex-direction: column;
+  }
+}
 </style>
