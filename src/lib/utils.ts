@@ -28,3 +28,12 @@ export async function premiumExtractPhrasesFromText(text: string): Promise<Phras
     return []
   }
 }
+
+export const emailRules = [
+  (v: string) => !!v || 'Email is required',
+  (v: string) => /.+@.+\..+/.test(v) || 'Email must be valid'
+]
+export const passwordRules = [
+  (v: string) => !!v || 'Password is required',
+  (v: string) => v.length >= 6 || 'Password must be at least 6 characters'
+]

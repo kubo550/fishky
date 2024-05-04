@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -7,21 +7,13 @@ import {
 } from 'firebase/auth'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { emailRules, passwordRules } from '@/lib/utils'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
 const isLoggingIn = ref(false)
 const isError = ref(false)
-
-const emailRules = [
-  (v) => !!v || 'Email is required',
-  (v) => /.+@.+\..+/.test(v) || 'Email must be valid'
-]
-const passwordRules = [
-  (v) => !!v || 'Password is required',
-  (v) => v.length >= 6 || 'Password must be at least 6 characters'
-]
 
 const auth = getAuth()
 const login = async () => {

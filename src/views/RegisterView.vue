@@ -1,3 +1,42 @@
+<script setup lang="ts">
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { emailRules, passwordRules } from '@/lib/utils'
+
+const router = useRouter()
+const email = ref('')
+const password = ref('')
+const isLoggingIn = ref(false)
+
+const auth = getAuth()
+const register = async () => {
+  isLoggingIn.value = true
+  try {
+    await createUserWithEmailAndPassword(auth, email.value, password.value)
+    await router.push('/create')
+    isLoggingIn.value = false
+  } catch (error) {
+    isLoggingIn.value = false
+  }
+}
+
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider()
+  try {
+    await signInWithPopup(auth, provider)
+    await router.push('/')
+  } catch (error) {
+    console.error(error)
+  }
+}
+</script>
+
 <template>
   <v-sheet class="container">
     <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
@@ -70,53 +109,3 @@ button {
   }
 }
 </style>
-
-<script setup>
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup
-} from 'firebase/auth'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const email = ref('')
-const password = ref('')
-const isLoggingIn = ref(false)
-
-const emailRules = [
-  (v) => !!v || 'Email is required',
-  (v) => /.+@.+\..+/.test(v) || 'Email must be valid'
-]
-const passwordRules = [
-  (v) => !!v || 'Password is required',
-  (v) => v.length >= 6 || 'Password must be at least 6 characters'
-]
-
-const auth = getAuth()
-const register = async () => {
-  isLoggingIn.value = true
-  try {
-    await createUserWithEmailAndPassword(auth, email.value, password.value)
-    await router.push('/create')
-    isLoggingIn.value = false
-  } catch (error) {
-    isLoggingIn.value = false
-    console.error(error)
-
-    alert(error.message)
-  }
-}
-
-const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider()
-  try {
-    await signInWithPopup(auth, provider)
-    await router.push('/')
-  } catch (error) {
-    console.error(error)
-  }
-}
-</script>
