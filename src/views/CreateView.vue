@@ -73,7 +73,7 @@ const translatePhrases = async () => {
       @click="appState = AppState.UploadImage"
     >
       <v-icon icon="mdi-image" class="main__buttons__icon"></v-icon>
-      Img
+      Image
     </v-btn>
     <v-btn
       variant="outlined"
