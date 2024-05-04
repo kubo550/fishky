@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import HomeView from '../views/HomeView.vue'
 import CreateView from '../views/CreateView.vue'
 import LearnView from '@/views/LearnView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import FlashCardsView from '@/views/FlashCardsView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,16 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: RegisterView
+    },
+    {
+      path: '/sets',
+      name: 'flashcards',
+      component: FlashCardsView
+    },
+    {
+      path: '/sets/:id',
+      name: 'learn',
+      component: LearnView
     }
   ]
 })

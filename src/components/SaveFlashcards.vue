@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { Phrase } from '@/lib/types'
+import type { DbSet, Phrase } from '@/lib/types'
 import { ref } from 'vue'
 import { toast } from 'vue3-toastify'
 import { getAuth } from 'firebase/auth'
 import type { User } from 'firebase/auth'
+import { getFirestore, collection, addDoc } from 'firebase/firestore'
 
 const { phrases } = defineProps({
   phrases: {
@@ -17,29 +18,32 @@ const isSaving = ref(false)
 const error = ref<string | null>(null)
 const isSaved = ref(false)
 const auth = getAuth()
+const setName = ref('')
+const savedSetId = ref('')
 
-const saveToFirestore = async (creator: User, setName: string, flashcards: Phrase[]) => {
+const saveToFirestore = async (creator: User, name: string, flashcards: Phrase[]) => {
   const data = {
     creatorId: creator.uid,
     creatorEmail: creator.email,
-    setName,
+    setName: name,
     flashcards
-  }
+  } as DbSet
 
-  // Save data to Firestore
+  const db = getFirestore()
+  const savedDoc = await addDoc(collection(db, 'sets'), data)
+  return savedDoc.id
 }
 
-const saveFlashcardsSet = async (setName: string, flashcards: Phrase[]) => {
-  const user = auth.currentUser
-  if (!user) {
-    return
-  }
-
+const saveFlashcardsSet = async () => {
+  const user = auth.currentUser!
   try {
     error.value = null
     isSaving.value = true
 
     isSaving.value = false
+    const savedId = await saveToFirestore(user, setName.value, phrases)
+    savedSetId.value = savedId
+
     toast(`Flashcards set saved!`, {
       type: 'success',
       theme: 'dark',
@@ -50,6 +54,7 @@ const saveFlashcardsSet = async (setName: string, flashcards: Phrase[]) => {
   } catch (e) {
     error.value = 'Something went wrong. Please try again later.'
     isSaving.value = false
+    console.error(e)
   }
 }
 
@@ -95,21 +100,37 @@ const handleCopyToClipboard = () => {
       </v-carousel-item>
     </v-carousel>
 
-    <!--    <v-btn-->
-    <!--      v-if="!isSaved"-->
-    <!--      :disabled="isSaving || isSaved"-->
-    <!--      variant="outlined"-->
-    <!--      class="mt-4"-->
-    <!--      @click="saveFlashcardsSet"-->
-    <!--    >-->
-    <!--      <v-icon icon="mdi-content-save" class="mr-2"></v-icon>-->
-    <!--      {{ isSaving ? 'Saving...' : 'Save' }}-->
-    <!--    </v-btn>-->
+    <v-text-field
+      v-model="setName"
+      class="input"
+      :disabled="isSaved"
+      :rules="[() => !!setName || 'Set name is required']"
+      label="Set name"
+      placeholder="My first set"
+    ></v-text-field>
 
-    <!--    <v-btn v-if="isSaved" variant="outlined" class="mt-4" @click="isSaved = false">-->
+    <v-btn
+      v-if="!isSaved"
+      :disabled="isSaving || isSaved || !setName || !phrases.length"
+      variant="outlined"
+      class="mt-4"
+      @click="saveFlashcardsSet"
+    >
+      <v-icon icon="mdi-content-save" class="mr-2"></v-icon>
+      {{ isSaving ? 'Saving...' : 'Save set' }}
+    </v-btn>
+
+    <!--    <v-btn v-if="isSaved" variant="outlined" class="mt-4" @click="isSaved = false; ">-->
     <!--      <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>-->
     <!--      Go to flashcards-->
     <!--    </v-btn>-->
+
+    <a v-if="isSaved" :href="`/sets/${savedSetId}`">
+      <v-btn variant="outlined" class="mt-4">
+        <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>
+        Go to flashcards
+      </v-btn>
+    </a>
 
     <v-btn
       v-if="!isSaved"
@@ -118,18 +139,8 @@ const handleCopyToClipboard = () => {
       class="mt-4"
       @click="handleCopyToClipboard"
     >
-      <v-icon icon="mdi-content-save" class="mr-2"></v-icon>
+      <v-icon icon="mdi-content-copy" class="mr-2"></v-icon>
       Copy to clipboard
-    </v-btn>
-
-    <v-btn
-      v-if="!isSaved"
-      :disabled="isSaving || isSaved"
-      variant="outlined"
-      class="mt-4"
-      @click="saveFlashcardsSet"
-    >
-      Save set
     </v-btn>
   </v-container>
 </template>

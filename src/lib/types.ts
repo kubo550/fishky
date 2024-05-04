@@ -9,3 +9,11 @@ export type Phrase = {
   phrase?: string
   meaning?: string
 }
+
+export type DbSet = {
+  id?: string
+  creatorId: string
+  creatorEmail: string | null
+  setName: string
+  flashcards: Required<Phrase>[]
+}

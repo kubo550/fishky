@@ -27,6 +27,7 @@ const logout = async () => {
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/create">Create</RouterLink>
+          <RouterLink to="/sets">Learn</RouterLink>
 
           <RouterLink to="/register" v-if="!user">Register</RouterLink>
           <RouterLink to="/login" v-if="!user">Login</RouterLink>
