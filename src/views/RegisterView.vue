@@ -30,6 +30,8 @@
       >
         {{ isLoggingIn ? 'Registering...' : 'Register' }}
       </v-btn>
+
+      <v-btn class="mt-4" block @click="signInWithGoogle"> Sign up with Google </v-btn>
     </v-form>
   </v-sheet>
 </template>
@@ -70,7 +72,12 @@ button {
 </style>
 
 <script setup>
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -103,5 +110,13 @@ const register = async () => {
   }
 }
 
-const signInWithGoogle = async () => {}
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider()
+  try {
+    await signInWithPopup(auth, provider)
+    await router.push('/')
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>

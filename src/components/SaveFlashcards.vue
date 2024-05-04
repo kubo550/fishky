@@ -2,8 +2,9 @@
 import type { PropType } from 'vue'
 import type { Phrase } from '@/lib/types'
 import { ref } from 'vue'
-import { apiClient } from '@/lib/api-client'
 import { toast } from 'vue3-toastify'
+import { getAuth } from 'firebase/auth'
+import type { User } from 'firebase/auth'
 
 const { phrases } = defineProps({
   phrases: {
@@ -15,12 +16,29 @@ const { phrases } = defineProps({
 const isSaving = ref(false)
 const error = ref<string | null>(null)
 const isSaved = ref(false)
+const auth = getAuth()
+
+const saveToFirestore = async (creator: User, setName: string, flashcards: Phrase[]) => {
+  const data = {
+    creatorId: creator.uid,
+    creatorEmail: creator.email,
+    setName,
+    flashcards
+  }
+
+  // Save data to Firestore
+}
 
 const saveFlashcardsSet = async (setName: string, flashcards: Phrase[]) => {
+  const user = auth.currentUser
+  if (!user) {
+    return
+  }
+
   try {
     error.value = null
     isSaving.value = true
-    await apiClient.saveFlashcardsSet({ setName, flashcards })
+
     isSaving.value = false
     toast(`Flashcards set saved!`, {
       type: 'success',
@@ -28,7 +46,6 @@ const saveFlashcardsSet = async (setName: string, flashcards: Phrase[]) => {
       position: 'bottom-center',
       pauseOnHover: false
     })
-    // TODO: add confetti animation
     isSaved.value = true
   } catch (e) {
     error.value = 'Something went wrong. Please try again later.'
@@ -104,6 +121,16 @@ const handleCopyToClipboard = () => {
       <v-icon icon="mdi-content-save" class="mr-2"></v-icon>
       Copy to clipboard
     </v-btn>
+
+    <v-btn
+      v-if="!isSaved"
+      :disabled="isSaving || isSaved"
+      variant="outlined"
+      class="mt-4"
+      @click="saveFlashcardsSet"
+    >
+      Save set
+    </v-btn>
   </v-container>
 </template>
 
@@ -113,6 +140,7 @@ const handleCopyToClipboard = () => {
   max-width: 660px;
   min-width: auto;
 }
+
 form {
   display: flex;
   flex-direction: column;

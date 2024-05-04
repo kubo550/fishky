@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/CreateView.vue'
+import CreateView from '../views/CreateView.vue'
 import LearnView from '@/views/LearnView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import LoginView from '@/views/LoginView.vue'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +17,10 @@ const router = createRouter({
     {
       path: '/create',
       name: 'create',
-      component: AboutView
+      component: CreateView,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/learn',
@@ -36,4 +40,27 @@ const router = createRouter({
   ]
 })
 
+const getCurrentUser = () => {
+  return new Promise((resolve) => {
+    const auth = getAuth()
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      unsubscribe()
+      resolve(user)
+    })
+  })
+}
+
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!(await getCurrentUser())) {
+      next({
+        name: 'login'
+      })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+})
 export default router

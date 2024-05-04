@@ -6,7 +6,6 @@ import App from './App.vue'
 import router from './router'
 import Vue3Toastify, { type ToastContainerOptions } from 'vue3-toastify'
 import { initializeApp } from 'firebase/app'
-import { getAnalytics } from 'firebase/analytics'
 
 // Vuetify
 import 'vuetify/styles'

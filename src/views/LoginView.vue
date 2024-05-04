@@ -1,3 +1,58 @@
+<script setup>
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const email = ref('')
+const password = ref('')
+const isLoggingIn = ref(false)
+const isError = ref(false)
+
+const emailRules = [
+  (v) => !!v || 'Email is required',
+  (v) => /.+@.+\..+/.test(v) || 'Email must be valid'
+]
+const passwordRules = [
+  (v) => !!v || 'Password is required',
+  (v) => v.length >= 6 || 'Password must be at least 6 characters'
+]
+
+const auth = getAuth()
+const login = async () => {
+  isLoggingIn.value = true
+  isError.value = false
+
+  try {
+    await signInWithEmailAndPassword(auth, email.value, password.value)
+    await router.push('/')
+  } catch (error) {
+    email.value = ''
+    password.value = ''
+
+    isError.value = true
+    console.error(error)
+  } finally {
+    isLoggingIn.value = false
+  }
+}
+
+const signInWithGoogle = async () => {
+  const provider = new GoogleAuthProvider()
+  try {
+    await signInWithPopup(auth, provider)
+    await router.push('/')
+  } catch (error) {
+    console.error(error)
+  }
+}
+</script>
+
 <template>
   <v-sheet class="container">
     <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
@@ -23,13 +78,15 @@
 
       <v-btn
         class="mt-4"
-        type="button"
+        type="submit"
         block
         @click="login"
         :disabled="isLoggingIn || !email || !password"
       >
         {{ isLoggingIn ? 'Logging in...' : 'Login' }}
       </v-btn>
+
+      <v-btn class="mt-4" block @click="signInWithGoogle"> Sign in with Google </v-btn>
 
       <div class="text-md-center text-center text-red-500 mt-4 font-semibold italic invalid">
         {{ isError ? 'Invalid email or password' : '' }}
@@ -76,45 +133,3 @@ button {
   color: rgb(209, 109, 127);
 }
 </style>
-
-<script setup>
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-
-const router = useRouter()
-const email = ref('')
-const password = ref('')
-const isLoggingIn = ref(false)
-const isError = ref(false)
-
-const emailRules = [
-  (v) => !!v || 'Email is required',
-  (v) => /.+@.+\..+/.test(v) || 'Email must be valid'
-]
-const passwordRules = [
-  (v) => !!v || 'Password is required',
-  (v) => v.length >= 6 || 'Password must be at least 6 characters'
-]
-
-const auth = getAuth()
-const login = async () => {
-  isLoggingIn.value = true
-  isError.value = false
-
-  try {
-    await signInWithEmailAndPassword(auth, email.value, password.value)
-    await router.push('/')
-  } catch (error) {
-    email.value = ''
-    password.value = ''
-
-    isError.value = true
-    console.error(error)
-  } finally {
-    isLoggingIn.value = false
-  }
-}
-
-const signInWithGoogle = async () => {}
-</script>

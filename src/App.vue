@@ -1,5 +1,23 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+
+const auth = getAuth()
+const router = useRouter()
+
+const user = ref(auth.currentUser)
+
+onMounted(() => {
+  onAuthStateChanged(auth, (currentUser) => {
+    user.value = currentUser
+  })
+})
+
+const logout = async () => {
+  await signOut(auth)
+  await router.push('/')
+}
 </script>
 
 <template>
@@ -9,10 +27,11 @@ import { RouterLink, RouterView } from 'vue-router'
         <nav>
           <RouterLink to="/">Home</RouterLink>
           <RouterLink to="/create">Create</RouterLink>
-          <!--          <RouterLink to="/learn">Learn</RouterLink>-->
 
-          <RouterLink to="/login">Login</RouterLink>
-          <RouterLink to="/register">Register</RouterLink>
+          <RouterLink to="/register" v-if="!user">Register</RouterLink>
+          <RouterLink to="/login" v-if="!user">Login</RouterLink>
+
+          <button v-if="user" @click="logout">Logout</button>
         </nav>
       </div>
     </header>
@@ -46,6 +65,7 @@ nav {
 nav a {
   color: #333;
 }
+
 nav a.router-link-exact-active {
   color: #fda428;
 }
@@ -92,6 +112,7 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+
 .content-wrapper {
   width: 100%;
   display: flex;
