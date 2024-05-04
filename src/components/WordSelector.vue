@@ -68,6 +68,7 @@ const emit = defineEmits<{
 }
 
 .translate-button {
+  margin-top: 12px;
   width: 220px;
 }
 

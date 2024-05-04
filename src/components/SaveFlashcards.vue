@@ -62,8 +62,11 @@ const handleCopyToClipboard = () => {
 
 <template>
   <v-container class="container">
-    <p>You are about to save {{ phrases.length }} phrases</p>
-
+    <p>
+      Absolutely! With our assistance, you've successfully created {{ phrases.length }} flashcards.
+      Now you can start learning new words directly on our website or copy the flashcards and paste
+      them into <a href="https://quizlet.com/857781636/autosaved">Quizlet</a>.
+    </p>
     <v-carousel height="400" hide-delimiter-background show-arrows="hover">
       <v-carousel-item v-for="(phrase, i) in phrases" :key="i">
         <v-sheet height="100%">
@@ -122,7 +125,8 @@ form {
   width: 100%;
 }
 
-.text-h4, .text-h6 {
+.text-h4,
+.text-h6 {
   text-align: center;
 }
 </style>
