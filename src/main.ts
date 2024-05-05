@@ -20,12 +20,12 @@ const vuetify = createVuetify({
 })
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAk6O802KVTrb6oOv0GQu6_dxBzUDgCcHI',
+  apiKey: import.meta.env.VITE_NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: 'notefy-bae5d.firebaseapp.com',
   projectId: 'notefy-bae5d',
   storageBucket: 'notefy-bae5d.appspot.com',
   messagingSenderId: '711187894225',
-  appId: '1:711187894225:web:caa3960ca38802c7d05af0',
+  appId: import.meta.env.VITE_NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: 'G-56LLHWH1WC'
 }
 
