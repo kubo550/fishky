@@ -21,12 +21,18 @@ const emit = defineEmits<{
 <template>
   <div class="upload-text__container">
     <div>
-      <p>Upload text You wish to have a FishCard created!.</p>
-      <p>
-        This tool will utilize Ariticial Intelligence to break down provided Text into phrases.
+      <!--      basic styles -->
+      <p class="mb-2">⭐️Upload text You wish to have a FishCard created!.</p>
+      <p class="mb-2">
+        ⭐️This tool will utilize Ariticial Intelligence to break down provided Text into phrases.
       </p>
-      <p>From there You will be able to edit the phrases and translate them however You please!</p>
-      <p>Let's start learning!</p>
+      <p class="mb-2">
+        ⭐️From there You will be able to edit the phrases and translate them however You want!
+      </p>
+      <p class="mb-2">
+        ⭐️Separate words or phrases with a semi-colon (;) to create multiple phrases at once.
+      </p>
+      <p class="mb-2">⭐️Let's start learning!</p>
     </div>
     <div>
       <v-textarea
