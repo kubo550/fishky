@@ -47,6 +47,7 @@ const isTranslateButtonDisabled = () => {
 
 const onPhraseDeleteHandler = (id: string) => {
   phrases.value = phrases.value.filter((phrase) => phrase.id !== id)
+  navigator.vibrate(100);
 }
 
 const onPhraseAddHandler = () => {
