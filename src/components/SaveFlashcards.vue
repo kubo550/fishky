@@ -120,11 +120,6 @@ const handleCopyToClipboard = () => {
       {{ isSaving ? 'Saving...' : 'Save set' }}
     </v-btn>
 
-    <!--    <v-btn v-if="isSaved" variant="outlined" class="mt-4" @click="isSaved = false; ">-->
-    <!--      <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>-->
-    <!--      Go to flashcards-->
-    <!--    </v-btn>-->
-
     <a v-if="isSaved" :href="`/sets/${savedSetId}`">
       <v-btn variant="outlined" class="mt-4">
         <v-icon icon="mdi-lightbulb-on" class="mr-2"></v-icon>
