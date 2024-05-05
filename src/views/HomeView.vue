@@ -8,10 +8,13 @@ import { RouterLink } from 'vue-router'
       <img src="https://i.ibb.co/MyvCDx8/OIG2-removebg-preview.png" alt="Flashcards" />
     </div>
     <div class="side">
-      <h1><span>Fishky,</span> Master Your Mind, One <span>Flashcard </span>at a Time!</h1>
+      <h1 class="text-h4 text-sm-h3 text-md-h2">
+        Fishky, Master Your Mind, One Flashcard at a Time!
+      </h1>
 
-      <p>
-        Fishky is more than just a flashcard app; it's your personal learning assistant, designed to make studying efficient, effective, and enjoyable
+      <p class="text-sm-body text-md-body text-lg-body">
+        Fishky is more than just a flashcard app; it's your personal learning assistant, designed to
+        make studying efficient, effective, and enjoyable
       </p>
 
       <RouterLink to="/create">
