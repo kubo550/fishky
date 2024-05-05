@@ -5,15 +5,13 @@ import { RouterLink } from 'vue-router'
 <template>
   <main>
     <div class="side">
-      <img src="https://placehold.co/600x400" alt="Flashcards" />
+      <img src="https://i.ibb.co/MyvCDx8/OIG2-removebg-preview.png" alt="Flashcards" />
     </div>
     <div class="side">
-      <h1>Add words to your custom <span> flashcards </span></h1>
+      <h1><span>Fishky,</span> Master Your Mind, One <span>Flashcard </span>at a Time!</h1>
 
       <p>
-        Flashcards are nothing but lightning bolts in the world of learning. You simply show them to
-        your brain, and it goes "BOOM" - information gets absorbed faster than light rays into a
-        black hole!
+        Fishky is more than just a flashcard app; it's your personal learning assistant, designed to make studying efficient, effective, and enjoyable
       </p>
 
       <RouterLink to="/create">
