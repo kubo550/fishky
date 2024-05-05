@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: 'fisky'
+  publicPath: process.env.NODE_ENV === 'production' ? '/production-sub-path/' : '/'
 }
