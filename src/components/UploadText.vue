@@ -21,11 +21,11 @@ const emit = defineEmits<{
 <template>
   <div class="upload-text__container">
     <div>
-      <p>Paste any foreign language text into the box below.</p>
+      <p>Upload text You wish to have a FishCard created!.</p>
       <p>
-        This tool will intelligently break it down into smaller segments for your language learning
-        flashcards.
+        This tool will utilize Ariticial Intelligence to break down provided Text into phrases.
       </p>
+      <p>From there You will be able to edit the phrases and translate them however You please!</p>
       <p>Let's start learning!</p>
     </div>
     <div>

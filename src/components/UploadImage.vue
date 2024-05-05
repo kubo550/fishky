@@ -75,15 +75,14 @@ const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 <template>
   <div class="upload-image__container">
     <div class="upload-image__description">
-      <p>Here you can upload your image with text in different languages.</p>
+      <p>Below You can upload any picture containing text and our Artificial Inteligence will take care of everything!</p>
       <p>
-        We will try to extract text from it and translate it to your native language and create
-        flashcards for you.
+       Any text will be extracted and translated accordingly. FishCards will be created.
       </p>
 
       <p>
-        Download the template file to see how it should look in order to upload it correctly
-        <a href="/template-image.png" download>download</a>
+        In case of uncertainty, <a href="/template-image.png" download>download</a> a template image and see for Yourself how easy is is!
+      
       </p>
     </div>
 
