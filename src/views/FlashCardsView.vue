@@ -35,7 +35,7 @@ getSets()
             .substring(0, 100) + '...'
         }}
       </p>
-      <a :href="`/sets/${set.id}`">
+      <a :href="`/sets/${set.id}`" class="link">
         <v-btn color="orange-accent-2">Learn</v-btn>
       </a>
     </div>
@@ -48,7 +48,9 @@ getSets()
   gap: 16px;
   padding: 16px;
 }
-
+.link:hover {
+  background-color: transparent;
+}
 .cards__card {
   display: flex;
   flex-direction: column;

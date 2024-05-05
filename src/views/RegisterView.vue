@@ -38,7 +38,7 @@ const signInWithGoogle = async () => {
 </script>
 
 <template>
-  <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
+  <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto container">
     <h3 class="text-h4 text-center mb-10">Sign up</h3>
 
     <v-text-field
