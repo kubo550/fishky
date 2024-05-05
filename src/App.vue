@@ -2,6 +2,8 @@
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { toast } from 'vue3-toastify'
+import { onUnmounted } from 'vue'
 
 const auth = getAuth()
 const router = useRouter()
@@ -12,7 +14,27 @@ onMounted(() => {
   onAuthStateChanged(auth, (currentUser) => {
     user.value = currentUser
   })
+
+  window.addEventListener('online', () => showOnlineStatusToast(true))
+  window.addEventListener('offline', () => showOnlineStatusToast(false))
 })
+
+onUnmounted(() => {
+  window.removeEventListener('online', () => showOnlineStatusToast(true))
+  window.removeEventListener('offline', () => showOnlineStatusToast(false))
+})
+
+const showOnlineStatusToast = (online: boolean) => {
+  const type = online ? 'success' : 'warning'
+  const message = online ? 'You are online!' : 'You are offline!'
+
+  toast(message, {
+    type,
+    theme: 'dark',
+    position: 'bottom-center',
+    pauseOnHover: false
+  })
+}
 
 const logout = async () => {
   await signOut(auth)
