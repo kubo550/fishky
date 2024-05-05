@@ -38,41 +38,42 @@ const signInWithGoogle = async () => {
 </script>
 
 <template>
-  <v-sheet class="container">
-    <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
-      <h3 class="text-h4 text-center mb-10">Sign up</h3>
+  <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
+    <h3 class="text-h4 text-center mb-10">Sign up</h3>
 
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        type="email"
-        label="Email"
-        placeholder="johndoe@example.com"
-        class="my-4"
-      ></v-text-field>
+    <v-text-field
+      v-model="email"
+      :rules="emailRules"
+      type="email"
+      label="Email"
+      placeholder="johndoe@example.com"
+      class="my-4"
+    ></v-text-field>
 
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        type="password"
-        label="Password"
-        placeholder="*****"
-        class="my-4"
-      ></v-text-field>
+    <v-text-field
+      v-model="password"
+      :rules="passwordRules"
+      type="password"
+      label="Password"
+      placeholder="*****"
+      class="my-4"
+    ></v-text-field>
 
-      <v-btn
-        class="mt-4"
-        type="submit"
-        block
-        @click="register"
-        :disabled="isLoggingIn || !email || !password"
-      >
-        {{ isLoggingIn ? 'Registering...' : 'Register' }}
-      </v-btn>
+    <v-btn
+      color="orange-accent-2"
+      class="mt-4"
+      type="submit"
+      block
+      @click="register"
+      :disabled="isLoggingIn || !email || !password"
+    >
+      {{ isLoggingIn ? 'Registering...' : 'Register' }}
+    </v-btn>
 
-      <v-btn class="mt-4" block @click="signInWithGoogle"> Sign up with Google </v-btn>
-    </v-form>
-  </v-sheet>
+    <v-btn color="orange-accent-2" class="mt-4" block @click="signInWithGoogle">
+      Sign up with Google
+    </v-btn>
+  </v-form>
 </template>
 
 <style scoped>

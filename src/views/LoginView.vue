@@ -46,45 +46,46 @@ const signInWithGoogle = async () => {
 </script>
 
 <template>
-  <v-sheet class="container">
-    <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
-      <h3 class="text-h4 text-center mb-10">Sign in</h3>
+  <v-form fast-fail @submit.prevent class="pa-4 my-12 mx-auto w-100">
+    <h3 class="text-h4 text-center mb-10">Sign in</h3>
 
-      <v-text-field
-        v-model="email"
-        :rules="emailRules"
-        type="email"
-        label="Email"
-        placeholder="johndoe@example.com"
-        class="my-4"
-      ></v-text-field>
+    <v-text-field
+      v-model="email"
+      :rules="emailRules"
+      type="email"
+      label="Email"
+      placeholder="johndoe@example.com"
+      class="my-4"
+    ></v-text-field>
 
-      <v-text-field
-        v-model="password"
-        :rules="passwordRules"
-        type="password"
-        label="Password"
-        placeholder="*****"
-        class="my-4"
-      ></v-text-field>
+    <v-text-field
+      v-model="password"
+      :rules="passwordRules"
+      type="password"
+      label="Password"
+      placeholder="*****"
+      class="my-4"
+    ></v-text-field>
 
-      <v-btn
-        class="mt-4"
-        type="submit"
-        block
-        @click="login"
-        :disabled="isLoggingIn || !email || !password"
-      >
-        {{ isLoggingIn ? 'Logging in...' : 'Login' }}
-      </v-btn>
+    <v-btn
+      color="orange-accent-2"
+      class="mt-4"
+      type="submit"
+      block
+      @click="login"
+      :disabled="isLoggingIn || !email || !password"
+    >
+      {{ isLoggingIn ? 'Logging in...' : 'Login' }}
+    </v-btn>
 
-      <v-btn class="mt-4" block @click="signInWithGoogle"> Sign in with Google </v-btn>
+    <v-btn color="orange-accent-2" class="mt-4" block @click="signInWithGoogle">
+      Sign in with Google
+    </v-btn>
 
-      <div class="text-md-center text-center text-red-500 mt-4 font-semibold italic invalid">
-        {{ isError ? 'Invalid email or password' : '' }}
-      </div>
-    </v-form>
-  </v-sheet>
+    <div class="text-md-center text-center text-red-500 mt-4 font-semibold italic invalid">
+      {{ isError ? 'Invalid email or password' : '' }}
+    </div>
+  </v-form>
 </template>
 
 <style scoped>
