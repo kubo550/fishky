@@ -8,6 +8,11 @@ memorize information quickly and retain it for the long term. With Fishky, you c
 flashcards, or choose from a variety of pre-made decks.
 
 
+## Live demo
+
+[fishky.app](https://notefy-bae5d.web.app/)
+
+
 ## Project Setup
 
 ```sh
@@ -19,6 +24,7 @@ npm install
 ```sh
 npm run dev
 ```
+
 
 
 
