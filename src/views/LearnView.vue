@@ -30,39 +30,48 @@ getSet(setId)
 </script>
 
 <template>
-  <v-sheet class="container">
-    <h3 class="text-h5 text-sm-h4 text-md-h3 mb-10">{{ currentSet?.setName }}</h3>
-
+  <div class="learn__container">
     <v-carousel
       class="carousel"
       v-if="currentSet?.flashcards?.length"
-      hide-delimiter-background
+      hide-delimiters
       show-arrows="hover"
+      progress="orange-accent-2"
+      height="auto"
     >
+      <template v-slot:prev="{ props }">
+        <div class="arrow">
+          <v-icon color="grey-darken-4" @click="props.onClick">mdi-chevron-left</v-icon>
+        </div>
+      </template>
+      <template v-slot:next="{ props }">
+        <div class="arrow">
+          <v-icon color="grey-darken-4" @click="props.onClick">mdi-chevron-right</v-icon>
+        </div>
+      </template>
+
       <v-carousel-item class="item" v-for="(phrase, i) in currentSet?.flashcards || []" :key="i">
         <vue-flashcard :front="phrase.phrase" :back="phrase.meaning"> </vue-flashcard>
       </v-carousel-item>
     </v-carousel>
-  </v-sheet>
+  </div>
 </template>
 <style scoped>
-.container {
-  padding: 2rem;
-  max-width: 800px;
-  margin: 3rem auto;
-  min-width: auto;
-  width: 90vw;
-}
-
-.carousel {
-  max-width: 800px;
-  margin: 0 auto;
-  max-height: 400px;
-}
-
-.item {
+.learn__container {
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
+}
+
+.item {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  padding: 4px;
 }
 </style>

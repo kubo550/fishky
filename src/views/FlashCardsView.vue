@@ -23,34 +23,42 @@ getSets()
 </script>
 
 <template>
-  <v-sheet class="container mt-10 p-10">
-    <v-card v-for="set in allSets" class="mx-auto my-12 grid" elevation="16" max-width="344">
-      <v-card-item>
-        <v-card-title> {{ set.setName }}</v-card-title>
-
-        <v-card-subtitle> {{ set.creatorEmail }}</v-card-subtitle>
-      </v-card-item>
-
-      <v-card-text>
-        {{ set.flashcards.map((flashcard) => flashcard.phrase).join(', ') }}
-      </v-card-text>
-
-      <v-card-actions>
-        <a :href="`/sets/${set.id}`">
-          <v-btn color="primary">Learn</v-btn>
-        </a>
-      </v-card-actions>
-    </v-card>
-  </v-sheet>
+  <div class="cards__container">
+    <div v-for="set in allSets" :key="set.id" class="cards__card">
+      <h2>{{ set.setName }}</h2>
+      <h3>{{ set.creatorEmail }}</h3>
+      <p>
+        {{
+          set.flashcards
+            .map((flashcard) => flashcard.phrase)
+            .join(', ')
+            .substring(0, 100) + '...'
+        }}
+      </p>
+      <a :href="`/sets/${set.id}`">
+        <v-btn color="orange-accent-2">Learn</v-btn>
+      </a>
+    </div>
+  </div>
 </template>
 <style scoped>
-.container {
-  width: 100vw;
-  min-height: 80vh;
+.cards__container {
   display: grid;
-}
-.grid {
-  grid-template-columns: repeat(auto-fill, minmax(344px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 16px;
+  padding: 16px;
+}
+
+.cards__card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  p {
+    flex: 1;
+    padding-bottom: 16px;
+  }
 }
 </style>
