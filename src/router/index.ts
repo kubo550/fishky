@@ -10,44 +10,13 @@ import FlashCardsView from '@/views/FlashCardsView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/create',
-      name: 'create',
-      component: CreateView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/learn',
-      name: 'learn',
-      component: LearnView
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: RegisterView
-    },
-    {
-      path: '/sets',
-      name: 'flashcards',
-      component: FlashCardsView
-    },
-    {
-      path: '/sets/:id',
-      name: 'learn',
-      component: LearnView
-    }
+    { path: '/', name: 'home', component: HomeView },
+    { path: '/create', name: 'create', component: CreateView, meta: { requiresAuth: true } },
+    { path: '/learn', name: 'learn', component: LearnView },
+    { path: '/login', name: 'login', component: LoginView },
+    { path: '/register', name: 'register', component: RegisterView },
+    { path: '/sets', name: 'flashcards', component: FlashCardsView },
+    { path: '/sets/:id', name: 'learn', component: LearnView }
   ]
 })
 
