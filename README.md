@@ -1,4 +1,6 @@
-![logo](public%2Ficons%2F512.png)
+<p align="center">
+  <img src="public%2Ficons%2F512.png" alt="logo" />
+</p>
 
 ## Project Description
 
